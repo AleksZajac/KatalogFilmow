@@ -1,0 +1,8 @@
+{% include 'default/_form.html.twig' with {
+    page_title: 'title.add_comment',
+    attr: {
+        method: 'POST',
+        action: url('add_comment')
+    },
+    back_to_list_path: 'films_index',
+} %}
