@@ -1,8 +1,10 @@
-{% include 'default/_form1.html.twig' with {
-    page_title: 'title.tag_new',
+{% include 'default/_form.html.twig' with {
+    page_title: 'title.film_new',
     attr: {
         method: 'POST',
-        action: url('tag_new')
+        action: url('film_new')
     },
-    back_to_list_path: 'tag_index',
+    form: form,
+    submit_label: 'action_create'|trans,
+    back_to_list_path: 'films_index',
 } %}

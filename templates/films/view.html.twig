@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+{% endblock %}
+{% block title %}
+    {{ 'title.film'|trans({'%id%': film.id|default('')}) }}
+{% endblock %}
+
+{% block body %}
+
+
+<h3 class="login-heading mb-4">
+    {{ 'title.film'|trans }}</h3>
+
+    {% if film is defined and film|length %}
+        <dl class="dl-horizontal">
+            <dt>{{ 'label.title_film'|trans }}</dt>
+            <dd>{{ film.title }}</dd>
+            <dt>{{ 'label.film_description'|trans }}</dt>
+            <dd>{{ film.description }}</dd>
+            <dt>{{ 'label.releasedate'|trans }}</dt>
+            <dd>{{ film.releasedate|format_date('long') }}</dd>
+            <dt>{{ 'label.category'|trans }}</dt>
+            <td>{{ film.category.name }}</td>
+
+        </dl>
+
+
+        <a class="btn btn-primary prawa" href="{{ url('add_comment', {'id': film.id})}}" title="{{ 'action.back_to_list'|trans }}">
+            {{ 'action.add_comment'|trans }}
+        </a>
+
+        <h3 class="login-heading mb-4">{{ 'title.comments'|trans }}</h3>
+        {% if comments is defined %}
+        {% for comment in comments %}
+            <dl class="dl-horizontal">
+            {{ comment.content }}
+            {{ comment.date|date }}
+                <a class="btn btn-primary prawa" href="{{ url('comment_delete', {'id': comment.id})}}" title="{{ 'action.delete_comment'|trans }}">
+                    {{ 'action.delete_comment'|trans }}
+                </a>
+            </dl>
+        {% endfor %}
+        {% else %}
+            <p>
+                {{ 'message.no.comments'|trans }}
+            </p>
+        {% endif %}
+        <a class="btn btn-primary prawa" href="{{ url('films_index')}}" title="{{ 'action.back_to_list'|trans }}">{{ 'action.back_to_list'|trans }}
+        </a>
+    {% else %}
+        <p>
+            {{ 'message.item_not_found'|trans }}
+        </p>
+    {% endif %}
+
+
+{% endblock %}

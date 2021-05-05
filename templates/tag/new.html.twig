@@ -1,0 +1,8 @@
+{% include 'default/_form1.html.twig' with {
+    page_title: 'title.tag_new',
+    attr: {
+        method: 'POST',
+        action: url('tag_new')
+    },
+    back_to_list_path: 'tag_index',
+} %}

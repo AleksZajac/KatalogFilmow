@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+{% endblock %}
+
+{% block title %}
+    {{ 'title_tag_list'|trans }}
+{% endblock %}
+
+{% block body %}
+<h1>{{ 'title_tag_list'|trans }}</h1>
+{% if pagination is defined and pagination|length %}
+<div>
+
+    <div class="navigation text-center">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>{{knp_pagination_sortable(pagination, 'label.id'|trans, 'l.id')}}</th>
+            <th>{{knp_pagination_sortable(pagination, 'label.title_tag'|trans, 'l.title') }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for tag in pagination %}
+            <tr>
+                <td>{{ tag.id }}</td>
+                <td>{{ tag.name }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="navigation text-center">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+    {% else %}
+        <p>
+            {{ 'message.empty_list'|trans }}
+        </p>
+        <a class="btn btn-primary " href="{{ url('tag_new')}}" title="{{ 'action.add_tag'|trans }}">
+            {{ 'action.add_tag'|trans }}
+        </a>
+    {% endif %}
+
+    {% endblock %}

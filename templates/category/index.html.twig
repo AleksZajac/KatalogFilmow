@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+{% endblock %}
+
+{% block title %}
+    {{ 'title_category_list'|trans }}
+{% endblock %}
+
+{% block body %}
+<h1>{{ 'title_category_list'|trans }}</h1>
+{% if pagination is defined and pagination|length %}
+<div>
+
+    <div class="navigation text-center">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>{{knp_pagination_sortable(pagination, 'label.id'|trans, 'l.id')}}</th>
+            <th>{{knp_pagination_sortable(pagination, 'label.name_category'|trans, 'l.name') }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for category in pagination %}
+            <tr>
+                <td>{{ category.id }}</td>
+                <td>{{ category.name }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="navigation text-center">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+    <a class="btn btn-primary" href="{{ url('category_new')}}" title="{{ 'action.add_category'|trans }}">
+        {{ 'action.add_category'|trans }}
+    </a>
+    {% else %}
+        <p>
+            {{ 'message.empty_list'|trans }}
+        </p>
+        <a href="{{ url('category_new')}}" title="{{ 'action.add_category'|trans }}">
+            {{ 'action.add_category'|trans }}
+        </a>
+    {% endif %}
+
+    {% endblock %}
