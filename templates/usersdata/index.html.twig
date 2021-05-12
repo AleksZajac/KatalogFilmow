@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{asset('css/style3.css') }}">
+
+{% endblock %}
+{% block title %}
+    {{ 'title.Userspanel'|trans }}
+{% endblock %}
+
+{% block body %}
+   {% include 'nav.html.twig' %}
+                                <h1>{{ 'title.Userspanel'|trans}}</h1>
+                                <dl class="dl-horizontal">
+                                    <dt>{{ 'label.login'|trans }}</dt>
+                                    <dd>{{ usersdata.login }}</dd>
+                                    <dt>{{ 'label.name'|trans }}</dt>
+                                    <dd>{{ usersdata.name }}</dd>
+                                    <dt>{{ 'label.surname'|trans }}</dt>
+                                    <dd>{{ usersdata.surname }}</dd>
+                                </dl>
+
+                            </div>
+
+
+{% endblock %}
