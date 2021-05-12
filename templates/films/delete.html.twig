@@ -1,0 +1,10 @@
+
+{% include 'default/_form1.html.twig' with {
+    page_title: 'title.film_delete',
+    page_title_param: {'%id%': film.id},
+    attr: {
+        method: 'DELETE',
+        action: url('films_delete', {'id': film.id}),
+    },
+    back_to_list_path: 'films_index',
+} %}

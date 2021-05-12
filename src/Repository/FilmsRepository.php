@@ -143,4 +143,17 @@ class FilmsRepository extends ServiceEntityRepository
 
         return $queryBuilder;
     }
+    /**
+     * Delete record.
+     *
+     * @param \App\Entity\Films $film Film entity
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function delete(Films $film)
+    {
+        $this->_em->remove($film);
+        $this->_em->flush($film);
+    }
 }

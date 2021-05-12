@@ -48,7 +48,6 @@ class CommentsController extends AbstractController
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $comment->setDate(new \DateTime());
             $repository->save($comment);
             /*
             * Potwierdzienie zapisania

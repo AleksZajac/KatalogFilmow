@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block stylesheets %}
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://bootswatch.com/5/minty/bootstrap.min.css">
 {% endblock %}
 
 {% block title %}
@@ -8,15 +8,18 @@
 {% endblock %}
 
 {% block body %}
+    {% include 'nav.html.twig' %}
     <h1>{{ 'title_films_list'|trans }}</h1>
-    <a class="btn btn-primary " href="{{ url('film_new')}}" title="{{ 'action.add_film'|trans }}">
+    <a class="btn btn-outline-success" href="{{ url('film_new')}}" title="{{ 'action.add_film'|trans }}">
         {{ 'action.add_film'|trans }}
     </a>
-    <a class="btn btn-primary " href="{{ url('category_new')}}" title="{{ 'action.add_category'|trans }}">
+    <a class="btn btn-outline-success " href="{{ url('category_new')}}" title="{{ 'action.add_category'|trans }}">
         {{ 'action.add_category'|trans }}
     </a>
+
     {% if pagination is defined and pagination|length %}
-        <div class="navigation text-center">
+
+        <div class=" navigation pagination-sm">
             {{ knp_pagination_render(pagination) }}
         </div>
 
@@ -36,6 +39,12 @@
                         <td>{{ film.category.name }}</td>
                         <td><a class="btn btn-primary" href="{{ url('film_view', {id: film.id}) }}" title="{{ 'action.view'|trans }}">
                                 {{ 'action.view'|trans }}
+                            </a>
+                            <a class="btn btn-primary" href="{{ url('films_edit', {id: film.id}) }}" title="{{ 'action.edit'|trans }}">
+                                {{ 'action.edit'|trans }}
+                            </a>
+                            <a class="btn btn-primary" href="{{ url('films_delete', {id: film.id}) }}" title="{{ 'action.delete'|trans }}">
+                                {{ 'action.delete'|trans }}
                             </a>
                         </td>
                     </tr>

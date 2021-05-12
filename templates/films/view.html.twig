@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 {% block stylesheets %}
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://bootswatch.com/5/minty/bootstrap.min.css">
 {% endblock %}
 {% block title %}
     {{ 'title.film'|trans({'%id%': film.id|default('')}) }}
 {% endblock %}
 
 {% block body %}
-
+    {% include 'nav.html.twig' %}
 
 <h3 class="login-heading mb-4">
     {{ 'title.film'|trans }}</h3>
@@ -22,6 +22,10 @@
             <dd>{{ film.releasedate|format_date('long') }}</dd>
             <dt>{{ 'label.category'|trans }}</dt>
             <td>{{ film.category.name }}</td>
+            <dt>{{ 'label.tags'|trans }}</dt>
+            {% for tag in film.tags %}
+                {{ tag.name }}
+            {% endfor %}
 
         </dl>
 

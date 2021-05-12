@@ -57,19 +57,30 @@ class Films
     private $releasedate;
 
     /**
-     * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="films")
+     * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="films", cascade={"persist","remove"})
      */
     private $comment;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="films")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $category;
 
+    /**
+     * Tags
+     * @var array
+     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="films")
+     * @ORM\JoinTable(name="films_tags")
+     */
+    private $tags;
+
+    /**
+     * Task constructor.
+     */
     public function __construct()
     {
-        $this->comment = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
     /**
@@ -183,5 +194,41 @@ class Films
         $this->category = $category;
 
         return $this;
+    }
+
+    /**
+     * Getter for tags.
+     *
+     * @return \Doctrine\Common\Collections\Collection|\App\Entity\Tag[] Tags collection
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    /**
+     * Add tag to collection.
+     *
+     * @param \App\Entity\Tag $tag Tag entity
+     */
+    public function addTag(Tag $tag): self
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags[] = $tag;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove tag from collection.
+     *
+     * @param \App\Entity\Tag $tag Tag entity
+     */
+    public function removeTag(Tag $tag): self
+    {
+        if ($this->tags->contains($tag)) {
+            $this->tags->removeElement($tag);
+        }
     }
 }

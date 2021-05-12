@@ -11,6 +11,7 @@ use App\Repository\CommentsRepository;
 use App\Repository\FilmsRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -120,6 +121,90 @@ class FilmsController extends AbstractController
         return $this->render(
             'films/new.html.twig',
             ['form' => $form->createView()]
+        );
+    }
+    /**
+     * Edit action.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
+     * @param \App\Entity\Films                         $film      Films entity
+     * @param \App\Repository\FilmsRepository           $repository Films repository
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @Route(
+     *     "/{id}/edit",
+     *     methods={"GET", "PUT"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="films_edit",
+     * )
+     *
+     */
+    public function edit(Request $request, Films $film, FilmsRepository $repository): Response
+    {
+        $form = $this->createForm(FilmsType::class, $film, ['method' => 'PUT']);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $repository->save($film);
+
+            $this->addFlash('success', 'message.updated_successfully');
+
+            return $this->redirectToRoute('films_index');
+        }
+
+        return $this->render(
+            'films/edit.html.twig',
+            [
+                'form' => $form->createView(),
+                'film' => $film,
+            ]
+        );
+    }
+    /**
+     * Delete action.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
+     * @param \App\Entity\Films                         $film      Film entity
+     * @param \App\Repository\FilmsRepository           $repository Film repository
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @Route(
+     *     "/{id}/delete",
+     *     methods={"GET", "DELETE"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="films_delete",
+     * )
+     */
+    public function delete(Request $request, Films $film, FilmsRepository $repository): Response
+    {
+        $form = $this->createForm(FormType::class, $film, ['method' => 'DELETE']);
+        $form->handleRequest($request);
+
+        if ($request->isMethod('DELETE') && !$form->isSubmitted()) {
+            $form->submit($request->request->get($form->getName()));
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $repository->delete($film);
+            $this->addFlash('success', 'message.deleted_successfully');
+
+            return $this->redirectToRoute('films_index');
+        }
+
+        return $this->render(
+            'films/delete.html.twig',
+            [
+                'form' => $form->createView(),
+                'film' => $film,
+            ]
         );
     }
 }

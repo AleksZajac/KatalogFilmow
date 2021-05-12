@@ -1,14 +1,13 @@
 {% extends 'base.html.twig' %}
 {% block stylesheets %}
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://bootswatch.com/5/minty/bootstrap.min.css">
 {% endblock %}
 
 {% block title %}
     {{ 'title_category_list'|trans }}
 {% endblock %}
-
 {% block body %}
-<h1>{{ 'title_category_list'|trans }}</h1>
+    {% include 'nav.html.twig' %}
 {% if pagination is defined and pagination|length %}
 <div>
 
@@ -16,7 +15,7 @@
         {{ knp_pagination_render(pagination) }}
     </div>
 
-    <table>
+    <table class="table table-striped">
         <thead>
         <tr>
             <th>{{knp_pagination_sortable(pagination, 'label.id'|trans, 'l.id')}}</th>
@@ -28,6 +27,12 @@
             <tr>
                 <td>{{ category.id }}</td>
                 <td>{{ category.name }}</td>
+                <td>
+                    <a class="btn btn-primary" href="{{ url('category_edit', {id: category.id}) }}" title="{{ 'action.edit'|trans }}">
+                        {{ 'action.edit'|trans }}
+                    </a>
+
+                </td>
             </tr>
         {% endfor %}
         </tbody>

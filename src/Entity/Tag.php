@@ -3,10 +3,18 @@
 namespace App\Entity;
 
 use App\Repository\TagRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass=TagRepository::class)
+ * Class Tag.
+ *
+ * @ORM\Entity(repositoryClass="App\Repository\TagRepository")
+ * @ORM\Table(name="tags")
+ *
+ * @UniqueEntity(fields={"name"})
  */
 class Tag
 {
@@ -30,6 +38,20 @@ class Tag
      */
     private $name;
 
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection|\App\Entity\Films[] Films
+     * @ORM\ManyToMany(targetEntity=Films::class, mappedBy="tags")
+     */
+    private $films;
+
+    /**
+     * Tag constructor.
+     */
+    public function __construct()
+    {
+        $this->films = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -45,5 +67,41 @@ class Tag
         $this->name = $name;
 
         return $this;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection|\App\Entity\Films[] Films collection
+     */
+    public function getFilms(): Collection
+    {
+        return $this->films;
+    }
+
+    /**
+     * Add task to collection.
+     *
+     * @param \App\Entity\Films $film Film entity
+     */
+    public function addFilm(Films $film): self
+    {
+        if (!$this->films->contains($film)) {
+            $this->films[] = $film;
+            $film->addTag($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove task from collection.
+     *
+     * @param \App\Entity\Films $film Task entity
+     */
+    public function removeFilm(Films $film): self
+    {
+        if ($this->films->contains($film)) {
+            $this->films->removeElement($film);
+            $film->removeTag($this);
+        }
     }
 }
