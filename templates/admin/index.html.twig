@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://bootswatch.com/5/minty/bootstrap.min.css">
+
+{% endblock %}
+{% block title %}
+    {{'title.admin'|trans}}
+{% endblock %}
+
+{% block body %}
+    {% include 'nav.html.twig' %}
+
+    <h1>{{ 'title.admin'|trans }}</h1>
+    <h3>{{  'label.users'|trans}}</h3>
+    {% if pagination is defined and pagination|length %}
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+            <table class="table table-hover">
+                <thead>
+                <tr class="table-active">
+                    <th>{{ knp_pagination_sortable(pagination, 'label.email'|trans, 't.tresc') }}</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in pagination %}
+                    <tr>
+                        <td>{{ user.email }}</td>
+
+
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+    {% else %}
+        <p>
+            {{ 'message.empty_list'|trans }}
+        </p>
+    {% endif %}
+
+
+
+
+{% endblock %}

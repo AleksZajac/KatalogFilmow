@@ -50,10 +50,10 @@ class UserType extends AbstractType
             ]
         );
         $builder->add(
-            'usersdata',
+            'usersprofile',
             CollectionType::class,
             [
-                'entry_type' => UsersDataType::class,
+                'entry_type' => UsersProfileType::class,
                 'label' => false,
             ]
         );

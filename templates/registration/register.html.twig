@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+{% endblock %}
+{% block title %}
+    {{ 'title.register'|trans}}
+{% endblock %}
+{% block body %}
+    <h1>Zarejestruj się</h1>
+    {{ form_start(form, { method: 'POST', action: url('registration') }) }}
+    {{ form_widget(form) }}
+    <div class="form-group row float-sm-right">
+        <input type="submit" value="Zarejestruj się" class="btn btn-primary" />
+    </div>
+    {{ form_end(form) }}
+
+{% endblock %}
