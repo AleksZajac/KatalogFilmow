@@ -9,10 +9,11 @@ use App\Entity\Films;
 use App\Form\FilmsType;
 use App\Repository\CommentsRepository;
 use App\Repository\FilmsRepository;
-use Knp\Component\Pager\PaginatorInterface;
+use App\Service\CategoryService;
+use App\Service\FilmsService;
+use App\Service\TagService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,11 +26,41 @@ use Symfony\Component\Routing\Annotation\Route;
 class FilmsController extends AbstractController
 {
     /**
+     * Category service.
+     *
+     * @var \App\Service\FilmsService
+     */
+    private $filmsService;
+    /**
+     * Category service.
+     *
+     * @var \App\Service\CategoryService
+     */
+    private $categoryService;
+    /**
+     * Category service.
+     *
+     * @var \App\Service\TagService
+     */
+    private $tagService;
+    /**
+     * CategoryController constructor.
+     *
+     * @param \App\Service\FilmsService $filmsService Category service
+     */
+    public function __construct(FilmsService $filmsService, CategoryService $categoryService, TagService $tagService)
+    {
+        $this->filmsService = $filmsService;
+        $this->categoryService = $categoryService;
+        $this->tagService = $tagService;
+    }
+
+
+    /**
      * Index action.
      *
-     * @param \App\Repository\FilmsRepository           $repository Films repository
-     * @param \Knp\Component\Pager\PaginatorInterface   $paginator  Paginator
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
+     * @param \Knp\Component\Pager\PaginatorInterface   $paginator Paginator
+     * @param \Symfony\Component\HttpFoundation\Request $request   HTTP request
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -39,25 +70,31 @@ class FilmsController extends AbstractController
      *     name="films_index",
      * )
      */
-    public function index(FilmsRepository $repository, PaginatorInterface $paginator, Request $request): Response
+    public function index(Request $request): Response
     {
-        $pagination = $paginator->paginate(
-            $repository->queryAll(),
-            $request->query->getInt('page', 1),
-            Films::NUMBER_OF_ITEMS
-        );
-        $form = $this->createForm(SearchType::class);
-        $form->handleRequest($request);
+        $filters = [];
+        $filters['category_id'] = $request->query->getInt('filters_category_id');
+        $filters['tag_id'] = $request->query->getInt('filters_tag_id');
 
-        return $this->render('films/index.html.twig', ['pagination' => $pagination, 'form' => $form->createView()]);
+        $pagination = $this->filmsService->createPaginatedList(
+            $request->query->getInt('page', 1),
+            $filters
+        );
+        $category = $this->categoryService->allCategory();
+        $tag = $this->tagService->allTag();
+        return $this->render(
+            'films/index.html.twig',
+            ['pagination' => $pagination,
+                'category' => $category,
+                'tag' => $tag
+                ]
+        );
     }
 
     /**
      * View action.
      *
-     * @param \App\Entity\Films                         $film      Film Entity
-     * @param \Knp\Component\Pager\PaginatorInterface   $paginator Paginator
-     * @param \Symfony\Component\HttpFoundation\Request $request   HTTP request
+     * @param \App\Entity\Films $film Film Entity*
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -67,13 +104,8 @@ class FilmsController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      * )
      */
-    public function view(Films $film, FilmsRepository $filmsRepository, CommentsRepository $commentsRepository, PaginatorInterface $paginator, Request $request, $id): Response
+    public function view(Films $film, CommentsRepository $commentsRepository, Request $request, $id): Response
     {
-        $pagination = $paginator->paginate(
-            $filmsRepository->queryAll(),
-            $request->query->getInt('page', 1),
-            Films::NUMBER_OF_ITEMS
-        );
         $comments = $film->getComment();
 
         return $this->render(
@@ -81,7 +113,6 @@ class FilmsController extends AbstractController
             [
                 'film' => $film,
                 'comments' => $comments,
-                'pagination' => $pagination,
             ]
         );
     }
@@ -89,8 +120,7 @@ class FilmsController extends AbstractController
     /**
      * New action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Repository\FilmsRepository           $repository Films repository
+     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request*
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -109,10 +139,8 @@ class FilmsController extends AbstractController
         $form = $this->createForm(FilmsType::class, $film);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $repository->save($film);
-            /*
-             * Potwierdzienie zapisania
-             */
+            $this->filmsService->save($film);
+
             $this->addFlash('success', 'message_created_successfully');
 
             return $this->redirectToRoute('films_index');
@@ -123,12 +151,12 @@ class FilmsController extends AbstractController
             ['form' => $form->createView()]
         );
     }
+
     /**
      * Edit action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Entity\Films                         $film      Films entity
-     * @param \App\Repository\FilmsRepository           $repository Films repository
+     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
+     * @param \App\Entity\Films                         $film    Films entity*
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -141,15 +169,14 @@ class FilmsController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="films_edit",
      * )
-     *
      */
-    public function edit(Request $request, Films $film, FilmsRepository $repository): Response
+    public function edit(Request $request, Films $film): Response
     {
         $form = $this->createForm(FilmsType::class, $film, ['method' => 'PUT']);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $repository->save($film);
+            $this->filmsService->save($film);
 
             $this->addFlash('success', 'message.updated_successfully');
 
@@ -164,11 +191,12 @@ class FilmsController extends AbstractController
             ]
         );
     }
+
     /**
      * Delete action.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Entity\Films                         $film      Film entity
+     * @param \App\Entity\Films                         $film       Film entity
      * @param \App\Repository\FilmsRepository           $repository Film repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
@@ -183,7 +211,7 @@ class FilmsController extends AbstractController
      *     name="films_delete",
      * )
      */
-    public function delete(Request $request, Films $film, FilmsRepository $repository): Response
+    public function delete(Request $request, Films $film): Response
     {
         $form = $this->createForm(FormType::class, $film, ['method' => 'DELETE']);
         $form->handleRequest($request);
@@ -193,7 +221,7 @@ class FilmsController extends AbstractController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $repository->delete($film);
+            $this->filmsService->delete($film);
             $this->addFlash('success', 'message.deleted_successfully');
 
             return $this->redirectToRoute('films_index');

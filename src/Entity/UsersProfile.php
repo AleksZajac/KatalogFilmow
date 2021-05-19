@@ -158,7 +158,7 @@ class UsersProfile
      */
     public function setLogin(?string $login): self
     {
-        $this->city = $login;
+        $this->login = $login;
 
         return $this;
     }

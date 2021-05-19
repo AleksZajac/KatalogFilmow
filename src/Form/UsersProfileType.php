@@ -53,7 +53,7 @@ class UsersProfileType extends AbstractType
             'login',
             TextType::class,
             [
-                'required' => false,
+                'required' => true,
                 'attr' => ['max_length' => 255,
                     'placeholder' => 'Login'],
             ]

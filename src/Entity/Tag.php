@@ -95,7 +95,7 @@ class Tag
     /**
      * Remove task from collection.
      *
-     * @param \App\Entity\Films $film Task entity
+     * @param \App\Entity\Films $film Film entity
      */
     public function removeFilm(Films $film): self
     {

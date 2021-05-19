@@ -97,6 +97,11 @@ class User implements UserInterface
      */
     private $usersprofile;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Avatar::class, mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $avatar;
+
 
 
     /**
@@ -238,6 +243,23 @@ class User implements UserInterface
         if ($this !== $usersprofile->getUser()) {
             $usersprofile->setUser($this);
         }
+
+        return $this;
+    }
+
+    public function getAvatar(): ?Avatar
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(Avatar $avatar): self
+    {
+        // set the owning side of the relation if necessary
+        if ($avatar->getUser() !== $this) {
+            $avatar->setUser($this);
+        }
+
+        $this->avatar = $avatar;
 
         return $this;
     }

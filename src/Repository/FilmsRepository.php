@@ -5,7 +5,9 @@
 
 namespace App\Repository;
 
+use App\Entity\Category;
 use App\Entity\Films;
+use App\Entity\Tag;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Expr\Value;
 use Doctrine\ORM\QueryBuilder;
@@ -28,14 +30,60 @@ class FilmsRepository extends ServiceEntityRepository
     }
 
     /**
+     * Items per page.
+     *
+     * Use constants to define configuration options that rarely change instead
+     * of specifying them in app/config/config.yml.
+     * See https://symfony.com/doc/current/best_practices.html#configuration
+     *
+     * @constant int
+     */
+    const PAGINATOR_ITEMS_PER_PAGE = 10;
+
+    /**
      * Query all records.
+     *
+     * @param array $filters Filters array
      *
      * @return \Doctrine\ORM\QueryBuilder Query builder
      */
-    public function queryAll(): QueryBuilder
+    public function queryAll(array $filters = []): QueryBuilder
     {
-        return $this->getOrCreateQueryBuilder()
-            ->orderBy('l.id', 'DESC');
+        $queryBuilder = $this->getOrCreateQueryBuilder()
+            ->select(
+                'partial film.{id, title}',
+                'partial category.{id, name}'
+            )
+            ->join('film.category', 'category')
+
+
+            ->orderBy('film.title', 'DESC');
+        $queryBuilder = $this->applyFiltersToList($queryBuilder, $filters);
+
+        return $queryBuilder;
+    }
+
+    /**
+     * Apply filters to paginated list.
+     *
+     * @param \Doctrine\ORM\QueryBuilder $queryBuilder Query builder
+     * @param array                      $filters      Filters array
+     *
+     * @return \Doctrine\ORM\QueryBuilder Query builder
+     */
+    private function applyFiltersToList(QueryBuilder $queryBuilder, array $filters = []): QueryBuilder
+    {
+        if (isset($filters['category']) && $filters['category'] instanceof Category) {
+            $queryBuilder->andWhere('category = :category')
+                ->setParameter('category', $filters['category']);
+        }
+
+        if (isset($filters['tag']) && $filters['tag'] instanceof Tag) {
+            $queryBuilder->andWhere('tags IN (:tag)')
+                ->setParameter('tag', $filters['tag']);
+        }
+
+        return $queryBuilder;
     }
 
     /**
@@ -47,7 +95,7 @@ class FilmsRepository extends ServiceEntityRepository
      */
     private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
     {
-        return $queryBuilder ?: $this->createQueryBuilder('l');
+        return $queryBuilder ?: $this->createQueryBuilder('film');
     }
 
     /**
@@ -68,6 +116,7 @@ class FilmsRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+
     /**
      * Save record.
      *
@@ -81,6 +130,7 @@ class FilmsRepository extends ServiceEntityRepository
         $this->_em->persist($film);
         $this->_em->flush($film);
     }
+
     // /**
     //  * @return Films[] Returns an array of Films objects
     //  */
@@ -111,13 +161,13 @@ class FilmsRepository extends ServiceEntityRepository
     */
 
     /**
-     * Query Films by name
+     * Query Films by name.
      *
      * @param null $id
      */
     public function queryById($id = null)
     {
-        $queryBuilder =$this->queryAll() ;
+        $queryBuilder = $this->queryAll();
 
         if (!is_null($id)) {
             $queryBuilder->andWhere('l.id LIKE :id')
@@ -126,15 +176,17 @@ class FilmsRepository extends ServiceEntityRepository
 
         return $queryBuilder->getQuery()->execute();
     }
+
     /**
-     * Query trash by id
+     * Query  by id.
      *
      * @param null $id
+     *
      * @return \Doctrine\ORM\QueryBuilder Query builder
      */
     public function queryById1($id = null): QueryBuilder
     {
-        $queryBuilder =$this->queryAll() ;
+        $queryBuilder = $this->queryAll();
 
         if (!is_null($id)) {
             $queryBuilder->andWhere('l.id LIKE :id')
@@ -143,6 +195,7 @@ class FilmsRepository extends ServiceEntityRepository
 
         return $queryBuilder;
     }
+
     /**
      * Delete record.
      *

@@ -9,6 +9,7 @@ use App\Entity\Tag;
 use App\Form\TagType;
 use App\Form\TagTypeedit;
 use App\Repository\TagRepository;
+use App\Service\TagService;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -25,9 +26,23 @@ use Symfony\Component\Routing\Annotation\Route;
 class TagController extends AbstractController
 {
     /**
-     * Index action.
+     * Category service.
      *
-     * @param \App\Repository\TagRepository             $repository Tag repository
+     * @var \App\Service\TagService
+     */
+    private $tagService;
+
+    /**
+     * CategoryController constructor.
+     *
+     * @param \App\Service\TagService $tagService Tag service
+     */
+    public function __construct(TagService $tagService)
+    {
+        $this->tagService = $tagService;
+    }
+    /**
+     * Index action.
      * @param \Knp\Component\Pager\PaginatorInterface   $paginator  Paginator
      * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
      *
@@ -41,15 +56,13 @@ class TagController extends AbstractController
      */
     public function index(TagRepository $repository, PaginatorInterface $paginator, Request $request): Response
     {
-        $pagination = $paginator->paginate(
-            $repository->queryAll(),
-            $request->query->getInt('page', 1),
-            Tag::NUMBER_OF_ITEMS
-        );
-        $form = $this->createForm(SearchType::class);
-        $form->handleRequest($request);
+        $page = $request->query->getInt('page', 1);
+        $pagination = $this->tagService->createPaginatedList($page);
 
-        return $this->render('tag/index.html.twig', ['pagination' => $pagination, 'form' => $form->createView()]);
+        return $this->render(
+            'tag/index.html.twig',
+            ['pagination' => $pagination]
+        );
     }
 
     /**
@@ -69,16 +82,13 @@ class TagController extends AbstractController
      *     name="tag_new",
      * )
      */
-    public function new(Request $request, TagRepository $repository): Response
+    public function new(Request $request): Response
     {
         $tag = new Tag();
         $form = $this->createForm(TagType::class, $tag);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $repository->save($tag);
-            /*
-             * Potwierdzienie zapisania
-             */
+            $this->tagService->save($tag);
             $this->addFlash('success', 'message_created_successfully');
 
             return $this->redirectToRoute('tag_index');
@@ -95,7 +105,6 @@ class TagController extends AbstractController
      *
      * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
      * @param \App\Entity\Tag                           $tag        Tag entity
-     * @param \App\Repository\TagRepository             $repository Tag repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -111,6 +120,11 @@ class TagController extends AbstractController
      */
     public function delete(Request $request, Tag $tag, TagRepository $repository): Response
     {
+        if ($tag->getFilms()->count()) {
+            $this->addFlash('warning', 'message_category_contains_films');
+
+            return $this->redirectToRoute('tag_index');
+        }
         $form = $this->createForm(FormType::class, $tag, ['method' => 'DELETE']);
         $form->handleRequest($request);
 
@@ -119,7 +133,8 @@ class TagController extends AbstractController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $repository->delete($tag);
+            $this->tagService->delete($tag);
+            ;
             $this->addFlash('success', 'message.deleted_successfully');
 
             return $this->redirectToRoute('tag_index');
@@ -159,7 +174,7 @@ class TagController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $repository->save($tag);
+            $this->tagService->save($tag);
 
             $this->addFlash('success', 'message.updated_successfully');
 

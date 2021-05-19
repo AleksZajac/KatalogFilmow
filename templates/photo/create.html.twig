@@ -1,0 +1,8 @@
+{% include 'default/_form1.html.twig' with {
+    page_title: 'title.photo_create',
+    attr: {
+        method: 'POST',
+        action: url('photos_create', {'id': film.getId()}),
+    },
+    back_to_list_path: 'films_index',
+} %}

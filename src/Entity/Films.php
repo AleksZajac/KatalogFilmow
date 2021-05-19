@@ -76,7 +76,14 @@ class Films
     private $tags;
 
     /**
-     * Task constructor.
+     * @ORM\OneToOne(targetEntity=Photo::class, mappedBy="films", cascade={"persist", "remove"})
+     */
+    private $photo;
+
+
+
+    /**
+     * Film constructor.
      */
     public function __construct()
     {
@@ -230,5 +237,39 @@ class Films
         if ($this->tags->contains($tag)) {
             $this->tags->removeElement($tag);
         }
+    }
+
+    public function getFileName(): ?Photo
+    {
+        return $this->fileName;
+    }
+
+    public function setFileName(Photo $fileName): self
+    {
+        // set the owning side of the relation if necessary
+        if ($fileName->getFilms() !== $this) {
+            $fileName->setFilms($this);
+        }
+
+        $this->fileName = $fileName;
+
+        return $this;
+    }
+
+    public function getPhoto(): ?Photo
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(Photo $photo): self
+    {
+        // set the owning side of the relation if necessary
+        if ($photo->getFilms() !== $this) {
+            $photo->setFilms($this);
+        }
+
+        $this->photo = $photo;
+
+        return $this;
     }
 }

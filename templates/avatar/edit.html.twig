@@ -1,0 +1,8 @@
+{% include 'default/_form1.html.twig' with {
+    page_title: 'title.avatar_edit',
+    attr: {
+        method: 'POST',
+        action: url('avatar_edit',{'id': avatar.id}),
+    },
+    back_to_list_path: 'profil_index',
+} %}

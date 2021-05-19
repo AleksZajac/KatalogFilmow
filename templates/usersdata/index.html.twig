@@ -8,17 +8,36 @@
 
 {% block body %}
    {% include 'nav.html.twig' %}
-                                <h1>{{ 'title.Userspanel'|trans}}</h1>
-                                <dl class="dl-horizontal">
-                                    <dt>{{ 'label.login'|trans }}</dt>
-                                    <dd>{{ usersdata.login }}</dd>
-                                    <dt>{{ 'label.name'|trans }}</dt>
-                                    <dd>{{ usersdata.name }}</dd>
-                                    <dt>{{ 'label.surname'|trans }}</dt>
-                                    <dd>{{ usersdata.surname }}</dd>
-                                </dl>
 
-                            </div>
+    <h1>{{ 'title.Userspanel'|trans}}</h1>
+    <h4>{{ 'title.youravatar'|trans }}</h4>
+    {% if app.user.avatar.filename is defined and app.user.avatar.filename|length %}
+        <img class="nav-profile-img" src="{{ asset('uploads/avatars/'~ app.user.avatar.filename) }}">
+        <a class="btn btn-outline-success " href="{{ url('avatar_edit', {id: app.user.avatar.id}) }}" title="{{ 'action.edit_avatar'|trans }}">
+            {{ 'action.edit_avatar'|trans }}
+        </a>
+        <a class="btn btn-outline-success " href="{{ url('avatar_delete', {id: app.user.avatar.id}) }}" title="{{ 'action.delete_avatar'|trans }}">
+            {{ 'action.delete_avatar'|trans }}
+        </a>
+    {% else %}
+        <a class="btn btn-outline-success " href="{{ url('avatar_create')}}" title="{{ 'action.add_avatar'|trans }}">
+            {{ 'action.add_avatar'|trans }}
+        </a>
+    {% endif %}
+
+
+    <dl class="dl-horizontal">
+        <dt>{{ 'label.login'|trans }}</dt>
+        <dd>{{ usersdata.login }}</dd>
+        <dt>{{ 'label.name'|trans }}</dt>
+        <dd>{{ usersdata.name }}</dd>
+        <dt>{{ 'label.surname'|trans }}</dt>
+        <dd>{{ usersdata.surname }}</dd>
+    </dl>
+    <a class="btn btn-outline-success " href="{{ url('data_edit')}}" title="{{ 'action.edit_data'|trans }}">
+        {{ 'action.edit_data'|trans }}
+    </a>
+
 
 
 {% endblock %}

@@ -9,6 +9,15 @@
 
 {% block body %}
     {% include 'nav.html.twig' %}
+    <h4>Kategorie</h4>
+        {% if category is defined and category|length %}
+            {% for item in category  %}
+            <a href="{{ url('films_index', {'filters.category_id' : item.id}) }}" title="{{ item.name }}">
+                {{ item.name }}
+            </a>
+            {% endfor %}
+        {% endif %}
+
     <h1>{{ 'title_films_list'|trans }}</h1>
     <a class="btn btn-outline-success" href="{{ url('film_new')}}" title="{{ 'action.add_film'|trans }}">
         {{ 'action.add_film'|trans }}
@@ -26,8 +35,8 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th>{{knp_pagination_sortable(pagination, 'label.id'|trans, 'l.id')}}</th>
-                    <th>{{knp_pagination_sortable(pagination, 'label.title_film'|trans, 'l.title') }}</th>
+                    <th>{{knp_pagination_sortable(pagination, 'label.id'|trans, 'film.id')}}</th>
+                    <th>{{knp_pagination_sortable(pagination, 'label.title_film'|trans, 'film.title') }}</th>
                     <th>{{ 'label_category'|trans }}</th>
                 </tr>
                 </thead>
