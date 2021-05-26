@@ -17,11 +17,16 @@
         <a class="btn btn-outline-success " href="{{ url('photo_edit', {id: film.photo.id}) }}" title="{{ 'action.edit_avatar'|trans }}">
             {{ 'action.edit_photo'|trans }}
         </a>
+        <a class="btn btn-outline-success " href="{{ url('photo_delete', {id: film.photo.id}) }}" title="{{ 'action.photo_avatar'|trans }}">
+            {{ 'action.delete_photo'|trans }}
+        </a>
     {% else %}
     <a class="btn btn-outline-success " href="{{ url('photos_create', {id: film.id})}}" title="{{ 'action.add_photo'|trans }}">
         {{ 'action.add_photo'|trans }}
     </a>
+
     {% endif %}
+
     {% if film is defined and film|length %}
         <dl class="dl-horizontal">
             <dt>{{ 'label.title_film'|trans }}</dt>

@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{asset('css/style4l.css') }}">
+    <link rel="stylesheet" href="{{asset('css/style3.css') }}">
+
+
+{% endblock %}
+{% block title %}
+    {{ 'title.change_password'|trans}}
+{% endblock %}
+{% block body %}
+                                <h1>{{ 'title.change_password'|trans}}</h1>
+                                {{ form_start(form, { method: 'PUT', action: url('change_password') }) }}
+                                {{ form_widget(form) }}
+
+
+                                <input type="submit" value="{{ 'label.change' | trans }}" class="btn btn-primary szczegoly2" />
+                                <a class="btn btn-primary szczegoly2 " href="{{ url('profil_index') }}" title="{{ 'action.back_to_list'|trans }}">{{ 'action.back_to_list'|trans }}</a>
+
+                                {{ form_end(form) }}
+
+{% endblock %}
