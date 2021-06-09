@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://bootswatch.com/5/minty/bootstrap.min.css">
+{% endblock %}
+
+{% block title %}
+    {% if page_title_param is defined %}{{ page_title|trans(page_title_param) }}{% else %}{{ page_title|trans }}{% endif %}
+{% endblock %}
+
+{% block body %}
+    <h1>
+        {% if page_title_param is defined %}{{ page_title|trans(page_title_param) }}{% else %}{{ page_title|trans }}{% endif %}
+    </h1>
+
+    {{ form_start(form, { method: attr.method|default('POST'), action: attr.action }) }}
+    {% if false == form.vars.valid %}
+        {% include 'default/_single_flash_message.html.twig' with {
+            type: 'danger',
+            message: 'message.form_error'|trans,
+        }%}
+    {% endif %}
+    {{ form_widget(form) }}
+
+
+    {% if back_to_list_path|default(false) %}
+
+        <a class="btn btn-primary " href="{{ url('admin_index')}}" title="{{ 'action.back_to_list'|trans }}">
+            {{ 'action.back_to_list'|trans }}
+        </a>
+
+    {% endif %}
+
+    <input type="submit" value="{{ submit_label|default('action.save'|trans) }}" class="btn btn-primary " />
+
+
+    {{ form_end(form) }}
+
+{% endblock %}

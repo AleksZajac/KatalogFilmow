@@ -1,0 +1,10 @@
+
+{% include 'default/_form3.html.twig' with {
+    page_title: 'title.add_admin',
+    page_title_param: {'%id%': user.id},
+    attr: {
+        method: 'PUT',
+        action: url('add_admin', {id: user.id}),
+    },
+    back_to_list_path: 'users_admin',
+} %}

@@ -1,0 +1,10 @@
+
+{% include 'default/_form3.html.twig' with {
+    page_title: 'title.user_delete',
+    page_title_param: {'%id%': user.id},
+    attr: {
+        method: 'DELETE',
+        action: url('user_delete', {'id': user.id}),
+    },
+    back_to_list_path: 'users_admin',
+} %}

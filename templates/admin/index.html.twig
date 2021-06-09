@@ -28,7 +28,14 @@
                 {% for user in pagination %}
                     <tr>
                         <td>{{ user.email }}</td>
-
+                        <td>{% for item in user.roles  %}
+                            {{ item }}
+                            {% endfor %}
+                        </td>
+                        <td>
+                            <a class="btn btn-primary" href="{{ path('user_delete', {id: user.id}) }}" title="{{ 'action.deleteUser'|trans }}">{{ 'action.deleteUser'|trans }}</a>
+                            <a class="btn btn-primary" href="{{ path('add_admin', {id: user.id}) }}" title="{{ 'action.addAdmin'|trans }}">{{ 'action.addAdmin'|trans }}</a>
+                        </td>
 
                     </tr>
                 {% endfor %}
@@ -45,8 +52,4 @@
             {{ 'message.empty_list'|trans }}
         </p>
     {% endif %}
-
-
-
-
 {% endblock %}
