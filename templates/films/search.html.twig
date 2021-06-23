@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title.film_search'|trans({'%id%': film.id|default('')}) }}
+{% endblock %}
+
+{% block body %}
+    {% include 'nav.html.twig' %}
+    <div class="container">
+        {{ form_start(form, { method: 'POST', action: url('film_search', name) }) }}
+        {{ form_widget(form) }}
+
+        <input type="submit" value="Szukaj" class="btn btn-primary" />
+
+
+        {{ form_end(form) }}
+    </div>
+    <a class="btn btn-primary" href="{{ url('film_index') }}" title="{{ 'back'|trans }}">
+        {{ 'search'|trans }}
+    </a>
+{% endblock %}

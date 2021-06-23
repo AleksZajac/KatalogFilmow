@@ -209,4 +209,21 @@ class FilmsRepository extends ServiceEntityRepository
         $this->_em->remove($film);
         $this->_em->flush($film);
     }
+    /**
+     * Query film by name
+     *
+     * @param null $title
+     * @return \Doctrine\ORM\QueryBuilder Query builder
+     */
+    public function queryByTitle($title = null): QueryBuilder
+    {
+        $queryBuilder =$this->queryAll() ;
+
+        if (!is_null($title)) {
+            $queryBuilder->andWhere('film.title LIKE :title')
+                ->setParameter('title', '%'.$title.'%');
+        }
+
+        return $queryBuilder;
+    }
 }

@@ -11,6 +11,7 @@ use App\Form\TagTypeedit;
 use App\Repository\TagRepository;
 use App\Service\TagService;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
@@ -53,6 +54,7 @@ class TagController extends AbstractController
      *     methods={"GET"},
      *     name="tag_index",
      * )
+     * @IsGranted("ROLE_ADMIN")
      */
     public function index(TagRepository $repository, PaginatorInterface $paginator, Request $request): Response
     {
@@ -81,6 +83,7 @@ class TagController extends AbstractController
      *     methods={"GET", "POST"},
      *     name="tag_new",
      * )
+     * @IsGranted("ROLE_ADMIN")
      */
     public function new(Request $request): Response
     {
@@ -117,11 +120,12 @@ class TagController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="tag_delete",
      * )
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Request $request, Tag $tag, TagRepository $repository): Response
     {
         if ($tag->getFilms()->count()) {
-            $this->addFlash('warning', 'message_category_contains_films');
+            $this->addFlash('warning', 'message_tag_contains_films');
 
             return $this->redirectToRoute('tag_index');
         }
@@ -167,6 +171,7 @@ class TagController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="tag_edit",
      * )
+     * @IsGranted("ROLE_ADMIN")
      */
     public function edit(Request $request, Tag $tag, TagRepository $repository): Response
     {

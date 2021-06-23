@@ -96,7 +96,7 @@ class PhotosController extends AbstractController
 
             $this->addFlash('success', 'message_created_successfully');
 
-            return $this->redirectToRoute('films_index');
+            return $this->redirectToRoute('film_view', ['id' => $photo->getFilms()->getId()]);
         }
 
         return $this->render(
@@ -150,6 +150,7 @@ class PhotosController extends AbstractController
             [
                 'form' => $form->createView(),
                 'photo' => $photo,
+                'id' => $photo->getFilms()->getId()
             ]
         );
     }
@@ -186,7 +187,7 @@ class PhotosController extends AbstractController
             $repository->delete($photo);
             $this->addFlash('success', 'message.deleted_successfully');
 
-            return $this->redirectToRoute('films_index');
+            return $this->redirectToRoute('film_view', ['id' => $photo->getFilms()->getId()]);
         }
 
         return $this->render(
@@ -194,6 +195,7 @@ class PhotosController extends AbstractController
             [
                 'form' => $form->createView(),
                 'photo' => $photo,
+                'id' => $photo->getFilms()->getId()
             ]
         );
     }

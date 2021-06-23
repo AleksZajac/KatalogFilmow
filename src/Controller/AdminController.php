@@ -8,6 +8,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,6 +35,7 @@ class AdminController extends AbstractController
      *     "/",
      *     name="admin_index",
      * )
+     * @IsGranted("ROLE_ADMIN")
      */
     public function index(Request $request, UserRepository $repository, PaginatorInterface $paginator): Response
     {
@@ -66,7 +68,7 @@ class AdminController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="user_delete",
      * )
-
+     * @IsGranted("ROLE_ADMIN")
      */
     public function deleteUser(Request $request, User $user, UserRepository $repository): Response
     {
@@ -108,7 +110,7 @@ class AdminController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="add_admin",
      * )
-     *
+     * @IsGranted("ROLE_ADMIN")
      */
     public function addAdmin(Request $request, User $user, UserRepository $repository): Response
     {

@@ -7,9 +7,10 @@
     {{ 'title_favorite_list'|trans }}
 {% endblock %}
 {% block body %}
-    {% include 'nav.html.twig' %}
+
 {% if pagination is defined and pagination|length %}
 <div>
+    <h2>{{ 'title_favorite_list'|trans }}</h2>
 
     <div class="navigation text-center">
         {{ knp_pagination_render(pagination) }}
@@ -18,7 +19,8 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>{{knp_pagination_sortable(pagination, 'label.id'|trans, 'l.id')}}</th>
+            <th>{{knp_pagination_sortable(pagination, 'label.title'|trans, 'favorite_movies.id')}}</th>
+            <th>{{ 'label_action'|trans }}</th>
 
         </tr>
         </thead>

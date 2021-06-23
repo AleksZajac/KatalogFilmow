@@ -28,7 +28,305 @@
             </trans-unit>
             <trans-unit id="title_record_list">
                 <source>title_record_list</source>
-                <target>Records list</target>
+                <target>Lista rekordów</target>
+            </trans-unit>
+            <trans-unit id="label.id">
+                <source>label.id</source>
+                <target>Id</target>
+            </trans-unit>
+            <trans-unit id="label.title_film">
+                <source>label.title_film</source>
+                <target>Tytuł filmu</target>
+            </trans-unit>
+            <trans-unit id="label_category">
+                <source>label_category</source>
+                <target>Kategoria</target>
+            </trans-unit>
+            <trans-unit id="label_action">
+                <source>label_action</source>
+                <target>Akcja</target>
+            </trans-unit>
+
+            <trans-unit id="title_films_list">
+                <source>title_films_list</source>
+                <target>Lista filmów</target>
+            </trans-unit>
+            <trans-unit id="action.add_film">
+                <source>action.add_film</source>
+                <target>Dodaj film</target>
+            </trans-unit>
+            <trans-unit id="action.add_category">
+                <source>action.add_category</source>
+                <target>Dodaj kategorię</target>
+            </trans-unit>
+            <trans-unit id="action.view">
+                <source>action.view</source>
+                <target>Więcej</target>
+            </trans-unit>
+            <trans-unit id="action.edit">
+                <source>action.edit</source>
+                <target>Edytuj</target>
+            </trans-unit>
+            <trans-unit id="action.delete">
+                <source>action.delete</source>
+                <target>Usuń</target>
+            </trans-unit>
+            <trans-unit id="title.film">
+                <source>title.film</source>
+                <target>Film</target>
+            </trans-unit>
+            <trans-unit id="action.add_photo">
+                <source>action.add_photo</source>
+                <target>Dodaj zdjęcie</target>
+            </trans-unit>
+            <trans-unit id="label.film_description">
+                <source>label.film_description</source>
+                <target>Opis</target>
+            </trans-unit>
+            <trans-unit id="label.releasedate">
+                <source>label.releasedate</source>
+                <target>Premiera</target>
+            </trans-unit>
+            <trans-unit id="label.category">
+                <source>label.category</source>
+                <target>Kategoria</target>
+            </trans-unit>
+            <trans-unit id="label.tags">
+                <source>label.tags</source>
+                <target>Tagi</target>
+            </trans-unit>
+            <trans-unit id="action.add_favorite">
+                <source>action.add_favorite</source>
+                <target>Dodaj do ulubionych</target>
+            </trans-unit>
+            <trans-unit id="action.add_comment">
+                <source>action.add_comment</source>
+                <target>Dodaj komentarz</target>
+            </trans-unit>
+            <trans-unit id="title.comments">
+                <source>title.comments</source>
+                <target>Komentarze</target>
+            </trans-unit>
+            <trans-unit id="action.delete_comment">
+                <source>action.delete_comment</source>
+                <target>Usuń komentarz</target>
+            </trans-unit>
+            <trans-unit id="message.no.comments">
+                <source>message.no.comments</source>
+                <target>Brak komentarzy</target>
+            </trans-unit>
+            <trans-unit id="message.item_not_found">
+                <source>message.item_not_found</source>
+                <target>Nie znaleziono elementow</target>
+            </trans-unit>
+            <trans-unit id="action.back_to_list">
+                <source>action.back_to_list</source>
+                <target>Wróć</target>
+            </trans-unit>
+            <trans-unit id="action.edit_photo">
+                <source>action.edit_photo</source>
+                <target>Edytuj zdjęcie</target>
+            </trans-unit>
+            <trans-unit id="action.delete_photo">
+                <source>action.delete_photo</source>
+                <target>Usuń zdjęcie</target>
+            </trans-unit>
+            <trans-unit id="title.photo_create">
+                <source>title.photo_create</source>
+                <target>Dodaj zdjęcie</target>
+            </trans-unit>
+            <trans-unit id="action.save">
+                <source>action.save</source>
+                <target>Zapisz</target>
+            </trans-unit>
+            <trans-unit id="title.photo_edit">
+                <source>title.photo_edit</source>
+                <target>Edycja zdjęcia</target>
+            </trans-unit>
+            <trans-unit id="title.photo_delete">
+                <source>title.photo_delete</source>
+                <target>Usuwanie zdjęcia</target>
+            </trans-unit>
+            <trans-unit id="Films">
+                <source>Films</source>
+                <target>Filmy</target>
+            </trans-unit>
+            <trans-unit id="Profile">
+                <source>Profile</source>
+                <target>Profil użytkownika</target>
+            </trans-unit>
+            <trans-unit id="Logout">
+                <source>Logout</source>
+                <target>Wyloguj</target>
+            </trans-unit>
+            <trans-unit id="Favorite">
+                <source>Favorite</source>
+                <target>Lista ulubionych</target>
+            </trans-unit>
+            <trans-unit id="Register">
+                <source>Register</source>
+                <target>Zarejestruj się</target>
+            </trans-unit>
+            <trans-unit id="Login">
+                <source>Login</source>
+                <target>Login</target>
+            </trans-unit>
+            <trans-unit id="Admin Panel">
+                <source>Admin Panel</source>
+                <target>Panel Administratora</target>
+            </trans-unit>
+            <trans-unit id="Category">
+                <source>Category</source>
+                <target>Kategorie</target>
+            </trans-unit>
+            <trans-unit id="Tag">
+                <source>Tag</source>
+                <target>Tagi</target>
+            </trans-unit>
+            <trans-unit id="title.Userspanel">
+                <source>title.Userspanel</source>
+                <target>Panel użytkownika</target>
+            </trans-unit>
+            <trans-unit id="title.youravatar">
+                <source>title.youravatar</source>
+                <target>Twój avatar:</target>
+            </trans-unit>
+            <trans-unit id="text.donthaveavatar">
+                <source>text.donthaveavatar</source>
+                <target>Nie masz jeszcze avatara. Możesz go dodać tutaj:</target>
+            </trans-unit>
+            <trans-unit id="action.edit_avatar">
+                <source>action.edit_avatar</source>
+                <target>Edytuj avatar</target>
+            </trans-unit>
+            <trans-unit id="action.delete_avatar">
+                <source>action.delete_avatar</source>
+                <target>Usuń avatar</target>
+            </trans-unit>
+            <trans-unit id="label.login">
+                <source>label.login</source>
+                <target>Login</target>
+            </trans-unit>
+            <trans-unit id="label.name">
+                <source>label.name</source>
+                <target>Imię</target>
+            </trans-unit>
+            <trans-unit id="label.surname">
+                <source>label.surname</source>
+                <target>Nazwisko</target>
+            </trans-unit>
+            <trans-unit id="action.edit_data">
+                <source>action.edit_data</source>
+                <target>Edytuj dane</target>
+            </trans-unit>
+            <trans-unit id="title.change_password">
+                <source>title.change_password</source>
+                <target>Zmień hasło</target>
+            </trans-unit>
+            <trans-unit id="action.add_avatar">
+                <source>action.add_avatar</source>
+                <target>Dodaj avatar</target>
+            </trans-unit>
+            <trans-unit id="title.create_avatar">
+                <source>title.create_avatar</source>
+                <target>Dodaj avatar</target>
+            </trans-unit>
+            <trans-unit id="title.avatar_edit">
+                <source>title.avatar_edit</source>
+                <target>Edytuj avatar</target>
+            </trans-unit>
+            <trans-unit id="action_save">
+                <source>action_save</source>
+                <target>Zapisz</target>
+            </trans-unit>
+            <trans-unit id="title_favorite_list">
+                <source>title_favorite_list</source>
+                <target>Lista ulubionych filmów</target>
+            </trans-unit>
+            <trans-unit id="title.admin">
+                <source>title.admin</source>
+                <target>Panel administratora</target>
+            </trans-unit>
+            <trans-unit id="label.users">
+                <source>label.users</source>
+                <target>Użytkownicy</target>
+            </trans-unit>
+            <trans-unit id="label.email">
+                <source>label.email</source>
+                <target>E-mail</target>
+            </trans-unit>
+            <trans-unit id="action.deleteUser">
+                <source>action.deleteUser</source>
+                <target>Usuń użytkownika</target>
+            </trans-unit>
+            <trans-unit id="action.addAdmin">
+                <source>action.addAdmin</source>
+                <target>Nadaj prawa administratora</target>
+            </trans-unit>
+            <trans-unit id="label_prawa">
+                <source>label_prawa</source>
+                <target>Prawa użytkowników</target>
+            </trans-unit>
+            <trans-unit id="title.user_delete">
+                <source>title.user_delete</source>
+                <target>Usuń użytkownika</target>
+            </trans-unit>
+            <trans-unit id="title.add_admin">
+                <source>title.add_admin</source>
+                <target>Nadaj prawa administratora</target>
+            </trans-unit>
+            <trans-unit id="title_category_list">
+                <source>title_category_list</source>
+                <target>Lista kategorii</target>
+            </trans-unit>
+
+            <trans-unit id="label.name_category">
+                <source>label.name_category</source>
+                <target>Nazwa kategorii</target>
+            </trans-unit>
+            <trans-unit id="title.category_edit">
+                <source>title.category_edit</source>
+                <target>Edycja kategorii</target>
+            </trans-unit>
+            <trans-unit id="title.category_new">
+                <source>title.category_new</source>
+                <target>Dodaj kategorię</target>
+            </trans-unit>
+            <trans-unit id="title.Category_delete">
+                <source>title.Category_delete</source>
+                <target>Usuń kategorię</target>
+            </trans-unit>
+            <trans-unit id="action_back_to_list">
+                <source>action_back_to_list</source>
+                <target>Wróć</target>
+            </trans-unit>
+            <trans-unit id="title_tag_list">
+                <source>title_tag_list</source>
+                <target>Lista tagów</target>
+            </trans-unit>
+            <trans-unit id="label.title_tag">
+                <source>label.title_tag</source>
+                <target>Nazwa tagu</target>
+            </trans-unit>
+            <trans-unit id="action.login">
+                <source>action.login</source>
+                <target>Zaloguj się</target>
+            </trans-unit>
+            <trans-unit id="Name">
+                <source>Name</source>
+                <target>Imię</target>
+            </trans-unit>
+            <trans-unit id="Surname">
+                <source>Surname</source>
+                <target>Nazwisko</target>
+            </trans-unit>
+            <trans-unit id="First">
+                <source>First</source>
+                <target>Hasło</target>
+            </trans-unit>
+            <trans-unit id="Second">
+                <source>Second</source>
+                <target>Powtórz hasło</target>
             </trans-unit>
         </body>
     </file>

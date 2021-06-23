@@ -12,8 +12,10 @@ use App\Repository\FilmsRepository;
 use App\Service\CategoryService;
 use App\Service\FilmsService;
 use App\Service\TagService;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -43,6 +45,7 @@ class FilmsController extends AbstractController
      * @var \App\Service\TagService
      */
     private $tagService;
+
     /**
      * CategoryController constructor.
      *
@@ -54,7 +57,6 @@ class FilmsController extends AbstractController
         $this->categoryService = $categoryService;
         $this->tagService = $tagService;
     }
-
 
     /**
      * Index action.
@@ -70,7 +72,7 @@ class FilmsController extends AbstractController
      *     name="films_index",
      * )
      */
-    public function index(Request $request): Response
+    public function index(Request $request, FilmsRepository $repository, PaginatorInterface $paginator): Response
     {
         $filters = [];
         $filters['category_id'] = $request->query->getInt('filters_category_id');
@@ -82,14 +84,32 @@ class FilmsController extends AbstractController
         );
         $category = $this->categoryService->allCategory();
         $tag = $this->tagService->allTag();
-        return $this->render(
+        $form = $this->createForm(SearchType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $pagination = null;
+            $title = $form->getData();
+            $pagination = $paginator->paginate(
+                $repository->queryByTitle($title),
+                $request->query->getInt('page', 1),
+                Films::NUMBER_OF_ITEMS
+            );
+            return $this->render(
+                'films/searchView.html.twig',
+                ['pagination' => $pagination]
+            );
+        }
+            return $this->render(
             'films/index.html.twig',
             ['pagination' => $pagination,
                 'category' => $category,
-                'tag' => $tag
+                'tag' => $tag,
+                'form' => $form->createView(),
                 ]
         );
-    }
+        }
+
 
     /**
      * View action.
@@ -232,6 +252,49 @@ class FilmsController extends AbstractController
             [
                 'form' => $form->createView(),
                 'film' => $film,
+            ]
+        );
+    }
+
+    /**
+     * Search action.
+     *
+     * @param \App\Entity\Films $film Film entity
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @Route(
+     *     "/search",
+     *      methods={"GET", "POST"},
+     *     name="film_search",
+     * )
+     */
+    public function searchForm(Request $request, PaginatorInterface $paginator, FilmsRepository $repository): Response
+    {
+        $form = $this->createForm(SearchType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $pagination = null;
+            $title = $form->getData();
+            $pagination = $paginator->paginate(
+                $repository->queryByTitle($title),
+                $request->query->getInt('page', 1),
+                Films::NUMBER_OF_ITEMS
+            );
+
+            return $this->render(
+                'films/searchView.html.twig',
+                ['pagination' => $pagination,
+                    'title' => $title,
+                ]
+            );
+        }
+
+        return $this->render(
+            'films/search.html.twig',
+            [
+                'form' => $form->createView(),
             ]
         );
     }

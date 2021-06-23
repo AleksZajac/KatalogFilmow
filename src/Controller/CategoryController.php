@@ -10,6 +10,7 @@ use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
 use App\Service\CategoryService;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
@@ -20,6 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * Class CategoryController.
  *
  * @Route("/category")
+ * @IsGranted("ROLE_ADMIN")
  */
 class CategoryController extends AbstractController
 {
@@ -50,6 +52,7 @@ class CategoryController extends AbstractController
      *     methods={"GET"},
      *     name="category_index",
      * )
+     * @IsGranted("ROLE_ADMIN")
      */
     public function index(CategoryRepository $repository, PaginatorInterface $paginator, Request $request): Response
     {
@@ -75,6 +78,7 @@ class CategoryController extends AbstractController
      *     methods={"GET", "POST"},
      *     name="category_new",
      * )
+     * @IsGranted("ROLE_ADMIN")
      */
     public function new(Request $request): Response
     {
@@ -109,7 +113,7 @@ class CategoryController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="category_edit",
      * )
-     *
+     * @IsGranted("ROLE_ADMIN")
      */
     public function edit(Request $request, Category $category, CategoryRepository $repository): Response
     {
@@ -149,6 +153,7 @@ class CategoryController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="category_delete",
      * )
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Request $request, Category $category): Response
     {

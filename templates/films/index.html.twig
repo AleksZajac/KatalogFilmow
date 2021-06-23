@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block stylesheets %}
     <link rel="stylesheet" href="https://bootswatch.com/5/minty/bootstrap.min.css">
+    <link rel="stylesheet" href="{{asset('css/style.css') }}">
 {% endblock %}
 
 {% block title %}
@@ -8,24 +9,38 @@
 {% endblock %}
 
 {% block body %}
-    {% include 'nav.html.twig' %}
+    <div>
+
+        <div class="form-inline ">
+            <h4>Znajdź film:   </h4>
+
+            {{ form_start(form, { class: "form-control mr-sm-2 btn-outline-success", method: 'POST', action: url('film_search') }) }}
+            {{ form_widget(form) }}
+
+            <input class="btn btn-outline-success  my-sm-0  " aria-label="Search" placeholder="Search" type="submit" value="Szukaj"  />
+
+
+            {{ form_end(form) }}
+
+        </div>
+    </div>
     <h4>Kategorie</h4>
-        {% if category is defined and category|length %}
-            {% for item in category  %}
+    {% if category is defined and category|length %}
+        {% for item in category  %}
             <a href="{{ url('films_index', {'filters.category_id' : item.id}) }}" title="{{ item.name }}">
                 {{ item.name }}
             </a>
-            {% endfor %}
-        {% endif %}
-
-    <h1>{{ 'title_films_list'|trans }}</h1>
+        {% endfor %}
+    {% endif %}
+    <h2>{{ 'title_films_list'|trans }}</h2>
+    {% if is_granted('ROLE_ADMIN') %}
     <a class="btn btn-outline-success" href="{{ url('film_new')}}" title="{{ 'action.add_film'|trans }}">
         {{ 'action.add_film'|trans }}
     </a>
     <a class="btn btn-outline-success " href="{{ url('category_new')}}" title="{{ 'action.add_category'|trans }}">
         {{ 'action.add_category'|trans }}
     </a>
-
+    {% endif %}
     {% if pagination is defined and pagination|length %}
 
         <div class=" navigation pagination-sm">
@@ -38,6 +53,7 @@
                     <th>{{knp_pagination_sortable(pagination, 'label.id'|trans, 'film.id')}}</th>
                     <th>{{knp_pagination_sortable(pagination, 'label.title_film'|trans, 'film.title') }}</th>
                     <th>{{ 'label_category'|trans }}</th>
+                    <th>{{ 'label_action'|trans }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -49,12 +65,14 @@
                         <td><a class="btn btn-primary" href="{{ url('film_view', {id: film.id}) }}" title="{{ 'action.view'|trans }}">
                                 {{ 'action.view'|trans }}
                             </a>
+                            {% if is_granted('ROLE_ADMIN') %}
                             <a class="btn btn-primary" href="{{ url('films_edit', {id: film.id}) }}" title="{{ 'action.edit'|trans }}">
                                 {{ 'action.edit'|trans }}
                             </a>
                             <a class="btn btn-primary" href="{{ url('films_delete', {id: film.id}) }}" title="{{ 'action.delete'|trans }}">
                                 {{ 'action.delete'|trans }}
                             </a>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}

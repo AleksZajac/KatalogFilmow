@@ -35,7 +35,7 @@ class PhotoType extends AbstractType
             FileType::class,
             [
                 'mapped' => false,
-                'label' => 'label_photo',
+                'label' => 'pliczek :',
                 'required' => true,
                 'constraints' => new Image(
                     [

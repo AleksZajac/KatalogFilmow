@@ -112,11 +112,11 @@ class FavoriteMovieController extends AbstractController
     public function new(Request $request, Films $films, int $id): Response
     {
         $userr = $this->getUser()->getId();
-        //if ($this->favoriteMoviesRepository->findBy(['id_user' => $userr]) and $this->favoriteMoviesRepository->findBy(['id_film' => $id])) {
-          //  $this->addFlash('success', 'message_call ready on list');
+        //if ($this->favoriteMoviesRepository->findBy(['id_user' => $userr,'id_film' => $id])){
+        //    $this->addFlash('success', 'message_call ready on list');
 
         //    return $this->redirectToRoute('favorite_index');
-       // }
+        //}
         if ($this->favoriteMoviesRepository->findBy(['id_user' => $userr])) {
             $favorite = $this->favoriteMoviesRepository->findOneBy(['id_user' => $userr]);
         } else {
