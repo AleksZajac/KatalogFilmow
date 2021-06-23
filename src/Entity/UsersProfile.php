@@ -71,6 +71,11 @@ class UsersProfile
      */
     private $user;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="login")
+     */
+    private $comments;
+
 
 
     /**
@@ -79,6 +84,7 @@ class UsersProfile
     public function __construct()
     {
         $this->reservation = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     /**
@@ -183,6 +189,36 @@ class UsersProfile
     public function setUser(User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comments[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comments $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setLogin($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comments $comment): self
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getLogin() === $this) {
+                $comment->setLogin(null);
+            }
+        }
 
         return $this;
     }

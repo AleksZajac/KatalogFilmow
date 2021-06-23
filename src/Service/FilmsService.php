@@ -127,4 +127,15 @@ class FilmsService
     {
         $this->filmsRepository->delete($films);
     }
+    /**
+     * Show user profile.
+     *
+     * @param int $id Id user
+     *
+     * @return Films user
+     */
+    public function showFilms(int $id)
+    {
+        return $this->filmsRepository->find($id);
+    }
 }

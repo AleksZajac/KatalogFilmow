@@ -45,14 +45,18 @@
         </dl>
 
 
+          <a class="btn btn-primary prawa" href="{{ url('favorite_new', {'id': film.id})}}" title="{{ 'action.back_to_list'|trans }}">
+            {{ 'action.add_favorite'|trans }}
+        </a>
         <a class="btn btn-primary prawa" href="{{ url('add_comment', {'id': film.id})}}" title="{{ 'action.back_to_list'|trans }}">
             {{ 'action.add_comment'|trans }}
         </a>
-
+        {{ dump(app.user.id) }}
         <h3 class="login-heading mb-4">{{ 'title.comments'|trans }}</h3>
         {% if comments is defined %}
         {% for comment in comments %}
             <dl class="dl-horizontal">
+            {{ comment.login.login }}
             {{ comment.content }}
             {{ comment.date|date }}
                 <a class="btn btn-primary prawa" href="{{ url('comment_delete', {'id': comment.id})}}" title="{{ 'action.delete_comment'|trans }}">

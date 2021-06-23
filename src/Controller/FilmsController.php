@@ -26,7 +26,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class FilmsController extends AbstractController
 {
     /**
-     * Category service.
+     * Film service.
      *
      * @var \App\Service\FilmsService
      */
@@ -38,7 +38,7 @@ class FilmsController extends AbstractController
      */
     private $categoryService;
     /**
-     * Category service.
+     * Tag service.
      *
      * @var \App\Service\TagService
      */

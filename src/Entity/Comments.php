@@ -44,6 +44,14 @@ class Comments
      */
     private $films;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=UsersProfile::class, inversedBy="comments")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $login;
+
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +94,18 @@ class Comments
     public function setFilms(?Films $films): self
     {
         $this->films = $films;
+
+        return $this;
+    }
+
+    public function getLogin()
+    {
+        return $this->login;
+    }
+
+    public function setLogin(?UsersProfile $login)
+    {
+        $this->login = $login;
 
         return $this;
     }

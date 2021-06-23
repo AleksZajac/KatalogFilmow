@@ -48,6 +48,8 @@ class CommentsController extends AbstractController
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $user= $this->getUser()->getUsersprofile();
+            $comment->setLogin($user);
             $repository->save($comment);
             /*
             * Potwierdzienie zapisania
@@ -63,7 +65,8 @@ class CommentsController extends AbstractController
         return $this->render(
             'comments/add_comment.html.twig',
             ['form' => $form->createView(),
-                'id' => $id, ]
+                'id' => $id
+            ]
         );
     }
     /**

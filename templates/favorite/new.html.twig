@@ -1,0 +1,10 @@
+{% include 'default/_form.html.twig' with {
+    page_title: 'title.favorite_new',
+    attr: {
+        method: 'POST',
+        action: url('favorite_new', {'id':id})
+    },
+    form: form,
+    submit_label: 'action_create'|trans,
+    back_to_list_path: 'favorite_index',
+} %}

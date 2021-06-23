@@ -70,8 +70,9 @@ class Films
     /**
      * Tags
      * @var array
-     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="films")
+     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="films", fetch="EXTRA_LAZY",)
      * @ORM\JoinTable(name="films_tags")
+     * @Assert\Type(type="Doctrine\Common\Collections\Collection")
      */
     private $tags;
 
@@ -79,6 +80,11 @@ class Films
      * @ORM\OneToOne(targetEntity=Photo::class, mappedBy="films", cascade={"persist", "remove"})
      */
     private $photo;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=FavoriteMovies::class, mappedBy="id_film", fetch="EXTRA_LAZY")
+     */
+    private $favoriteMovies;
 
 
 
@@ -88,6 +94,7 @@ class Films
     public function __construct()
     {
         $this->tags = new ArrayCollection();
+        $this->favoriteMovies = new ArrayCollection();
     }
 
     /**
@@ -269,6 +276,33 @@ class Films
         }
 
         $this->photo = $photo;
+
+        return $this;
+    }
+
+    /**
+     * @return \App\Entity\FavoriteMovies
+     */
+    public function getFavoriteMovies(): Collection
+    {
+        return $this->favoriteMovies;
+    }
+
+    public function addFavoriteMovie(FavoriteMovies $favoriteMovie): self
+    {
+        if (!$this->favoriteMovies->contains($favoriteMovie)) {
+            $this->favoriteMovies[] = $favoriteMovie;
+            $favoriteMovie->addIdFilm($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavoriteMovie(FavoriteMovies $favoriteMovie): self
+    {
+        if ($this->favoriteMovies->removeElement($favoriteMovie)) {
+            $favoriteMovie->removeIdFilm($this);
+        }
 
         return $this;
     }

@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://bootswatch.com/5/minty/bootstrap.min.css">
+{% endblock %}
+
+{% block title %}
+    {{ 'title_favorite_list'|trans }}
+{% endblock %}
+{% block body %}
+    {% include 'nav.html.twig' %}
+{% if pagination is defined and pagination|length %}
+<div>
+
+    <div class="navigation text-center">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>{{knp_pagination_sortable(pagination, 'label.id'|trans, 'l.id')}}</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        {% for favorite in pagination %}
+            {% if favorite.iduser.id == app.user.id %}
+                {% for film in favorite.idfilm %}
+                <tr><td> {{ film.title }}</td>
+                <td> <a class="btn btn-primary" href="{{ url('favorite_delete', {id: film.id}) }}" title="{{ 'action.delete'|trans }}">
+                        {{ 'action.delete'|trans }}
+                    </a></td>
+                </tr>
+                    {%  endfor %}
+                {# <td>{{ favorite.idfilm.filmsid.title }}</td>#}
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="navigation text-center">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+</div>
+{% else %}
+    <p>
+        {{ 'message.empty_list'|trans }}
+    </p>
+{% endif %}
+{% endblock %}

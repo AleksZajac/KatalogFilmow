@@ -1,0 +1,10 @@
+
+{% include 'default/_form.html.twig' with {
+    page_title: 'title.comments_delete',
+    page_title_param: {'%id%': favorite.id},
+    attr: {
+        method: 'DELETE',
+        action: url('favorite_delete', {'id': favorite.id}),
+    },
+    back_to_list_path: 'favorite_index',
+} %}

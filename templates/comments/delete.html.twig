@@ -4,7 +4,7 @@
     page_title_param: {'%id%': comments.id},
     attr: {
         method: 'DELETE',
-        action: url('comment_delete', {'id': comments.id}),
+        action: url('comment_delete', {'id': comments.id, 'login': app.userprofile.login}),
     },
     back_to_list_path: 'films_index',
 } %}
