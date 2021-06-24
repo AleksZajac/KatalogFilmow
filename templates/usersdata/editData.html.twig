@@ -7,7 +7,6 @@
 {% endblock %}
 
 {% block body %}
-    {% include 'nav.html.twig' %}
     <h1>  {{ 'title.change_data'|trans}}</h1>
     {{ form_start(form, { method: 'PUT', action: url('data_edit') }) }}
     {{ form_widget(form) }}

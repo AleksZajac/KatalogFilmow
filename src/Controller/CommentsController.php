@@ -10,6 +10,9 @@ use App\Entity\Films;
 use App\Form\CommentType;
 use App\Repository\CommentsRepository;
 use App\Repository\FilmsRepository;
+use App\Service\CommentsService;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -25,13 +28,28 @@ use Symfony\Component\Routing\Annotation\Route;
 class CommentsController extends AbstractController
 {
     /**
+     * Comments service.
+     *
+     * @var CommentsService
+     */
+    private $commentsService;
+    /**
+     * Categories Controller constructor.
+     *
+     * @param CommentsService $comments Categories service
+     */
+    public function __construct(CommentsService $commentsService)
+    {
+        $this->commentsService = $commentsService;
+    }
+    /**
      * }
      * Add comment action.
      *
-     * @param \App\Entity\Comments $comments Trash entity
-     * @param \App\Entity\Films $films Trash entity
+     * @param Comments $comments Trash entity
+     * @param Films $films Trash entity
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
      * @Route(
      *     "/add_comment/{id}",
@@ -72,14 +90,14 @@ class CommentsController extends AbstractController
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Entity\Comments                         $comments      Comments entity
-     * @param \App\Repository\CommentsRepository           $repository Comments repository
+     * @param Request $request    HTTP request
+     * @param Comments $comments      Comments entity
+     * @param CommentsRepository $repository Comments repository
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/delete",
@@ -98,7 +116,7 @@ class CommentsController extends AbstractController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $repository->delete($comments);
+            $this->commentsService->delete($comments);
             $this->addFlash('success', 'message.deleted_successfully');
 
             return $this->redirectToRoute('films_index');

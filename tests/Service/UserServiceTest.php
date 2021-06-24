@@ -63,6 +63,7 @@ class UserServiceTest extends KernelTestCase
         $this->assertEquals($expectedUser, $resultUser);
     }
 
+
     private function createUserProfile()
     {
         $profile = new UsersProfile();
@@ -161,5 +162,4 @@ class UserServiceTest extends KernelTestCase
         $this->userService = $container->get(UserService::class);
         $this->profileRepository = $container->get(UsersProfileRepository::class);
     }
-
 }

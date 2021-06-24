@@ -9,6 +9,8 @@ use App\Entity\Category;
 use App\Repository\CategoryRepository;
 use App\Repository\FilmsRepository;
 use App\Service\CategoryService;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
@@ -40,8 +42,8 @@ class CategoryServiceTest extends KernelTestCase
     /**
      * Test save.
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function testSave(): void
     {
@@ -62,8 +64,8 @@ class CategoryServiceTest extends KernelTestCase
     /**
      * Test delete.
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function testDelete(): void
     {
@@ -84,8 +86,8 @@ class CategoryServiceTest extends KernelTestCase
     /**
      * Test find by id.
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function testFindById(): void
     {
@@ -114,7 +116,7 @@ class CategoryServiceTest extends KernelTestCase
         $counter = 0;
         while ($counter < $dataSetSize) {
             $category = new Category();
-            $category->setName('Test Category #' . $counter);
+            $category->setName('Test Category #'.$counter);
             $this->categoryRepository->save($category);
 
             ++$counter;

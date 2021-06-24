@@ -81,7 +81,7 @@ class User implements UserInterface
     /**
      * Roles.
      *
-     * @ORM\Column(type="array")
+     * @ORM\Column(type="json")
      */
     private $roles = [];
 
