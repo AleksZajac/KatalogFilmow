@@ -31,12 +31,6 @@ class User implements UserInterface
      * @var string
      */
     const ROLE_USER = 'ROLE_USER';
-    /**
-     * INSTRUCTOR.
-     *
-     * @var string
-     */
-    const ROLE_INSTRUCTOR = 'ROLE_INSTRUCTOR';
 
     /**
      * ADMIN.

@@ -6,7 +6,9 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Repository\FavoriteMoviesRepository;
 use App\Repository\UserRepository;
+use App\Service\UserService;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,6 +24,28 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AdminController extends AbstractController
 {
+    /**
+     * Favorite service.
+     *
+     * @var \App\Repository\FavoriteMoviesRepository
+     */
+    private $favoriteMoviesRepository;
+    /**
+     * Favorite service.
+     *
+     * @var \App\Service\UserService
+     */
+    private $userService;
+    /**
+     * CategoryController constructor.
+     *
+     * @param \App\Service\FavoriteService $favoriteService Favorite service
+     */
+    public function __construct(UserService $userService, FavoriteMoviesRepository $favoriteMoviesRepository)
+    {
+        $this->userService = $userService;
+        $this->favoriteMoviesRepository = $favoriteMoviesRepository;
+    }
     /**
      * Index action.
      *
@@ -70,14 +94,20 @@ class AdminController extends AbstractController
      * )
      * @IsGranted("ROLE_ADMIN")
      */
-    public function deleteUser(Request $request, User $user, UserRepository $repository): Response
+    public function deleteUser(Request $request, User $user, UserRepository $repository, int $id, FavoriteMoviesRepository $favoriteMoviesRepository): Response
     {
         $form = $this->createForm(FormType::class, $user, ['method' => 'DELETE']);
         $form->handleRequest($request);
+
         if ($request->isMethod('DELETE') && !$form->isSubmitted()) {
             $form->submit($request->request->get($form->getName()));
         }
         if ($form->isSubmitted() && $form->isValid()) {
+            if($this->favoriteMoviesRepository->findBy(['id_user' => $id])){
+                $favorite = $this->favoriteMoviesRepository->findOneBy(['id_user' => $id]);
+                $favoriteMoviesRepository->delete($favorite);
+            }
+
             $repository->delete($user);
             $this->addFlash('success', 'success.deletedsuccessfully');
 

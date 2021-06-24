@@ -95,12 +95,14 @@ class FilmsController extends AbstractController
                 $request->query->getInt('page', 1),
                 Films::NUMBER_OF_ITEMS
             );
+
             return $this->render(
                 'films/searchView.html.twig',
                 ['pagination' => $pagination]
             );
         }
-            return $this->render(
+
+        return $this->render(
             'films/index.html.twig',
             ['pagination' => $pagination,
                 'category' => $category,
@@ -108,8 +110,7 @@ class FilmsController extends AbstractController
                 'form' => $form->createView(),
                 ]
         );
-        }
-
+    }
 
     /**
      * View action.

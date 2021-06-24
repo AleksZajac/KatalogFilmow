@@ -112,6 +112,7 @@ class FavoriteMovieController extends AbstractController
     public function new(Request $request, Films $films, int $id): Response
     {
         $userr = $this->getUser()->getId();
+        $thisuser = $this->getUser();
         //if ($this->favoriteMoviesRepository->findBy(['id_user' => $userr,'id_film' => $id])){
         //    $this->addFlash('success', 'message_call ready on list');
 
@@ -121,6 +122,7 @@ class FavoriteMovieController extends AbstractController
             $favorite = $this->favoriteMoviesRepository->findOneBy(['id_user' => $userr]);
         } else {
             $favorite = new FavoriteMovies();
+            $favorite->setIdUser($thisuser);
         }
         $films = $this->filmsService->showFilms($id);
         $user = $this->userService->showUser($userr);
