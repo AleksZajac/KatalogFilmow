@@ -14,6 +14,7 @@ use App\Service\CommentsService;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,7 +48,7 @@ class CommentsController extends AbstractController
      * Add comment action.
      *
      * @param Comments $comments Trash entity
-     * @param Films $films Trash entity
+     * @param Films    $films    Trash entity
      *
      * @return Response HTTP response
      *
@@ -56,8 +57,9 @@ class CommentsController extends AbstractController
      *      methods={"GET", "POST"},
      *     name="add_comment",
      * )
+     * @IsGranted("ROLE_USER")
      */
-    public function addcommentForm(Request $request, PaginatorInterface $paginator, CommentsRepository $repository, FilmsRepository $filmsRepository,$id): Response
+    public function addcommentForm(Request $request, PaginatorInterface $paginator, CommentsRepository $repository, FilmsRepository $filmsRepository, $id): Response
     {
         $comment = new Comments();
         $entityManager = $this->getDoctrine()->getManager();
@@ -66,7 +68,7 @@ class CommentsController extends AbstractController
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $user= $this->getUser()->getUsersprofile();
+            $user = $this->getUser()->getUsersprofile();
             $comment->setLogin($user);
             $repository->save($comment);
             /*
@@ -83,15 +85,15 @@ class CommentsController extends AbstractController
         return $this->render(
             'comments/add_comment.html.twig',
             ['form' => $form->createView(),
-                'id' => $id
+                'id' => $id,
             ]
         );
     }
     /**
      * Delete action.
      *
-     * @param Request $request    HTTP request
-     * @param Comments $comments      Comments entity
+     * @param Request            $request    HTTP request
+     * @param Comments           $comments   Comments entity
      * @param CommentsRepository $repository Comments repository
      *
      * @return Response HTTP response
@@ -105,6 +107,7 @@ class CommentsController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="comment_delete",
      * )
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Request $request, Comments $comments, CommentsRepository $repository): Response
     {

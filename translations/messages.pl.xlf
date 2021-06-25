@@ -339,7 +339,7 @@
 
             <trans-unit id="title.change_data">
                 <source>title.change_data</source>
-                <target>Zmień hasło</target>
+                <target>Zmień dane</target>
             </trans-unit>
             <trans-unit id="label.change">
                 <source>label.change</source>
@@ -361,6 +361,22 @@
             <trans-unit id="label.title">
                 <source>label.title</source>
                 <target>Tytuł</target>
+            </trans-unit>
+            <trans-unit id="title.Search_view">
+                <source>title.Search_view</source>
+                <target>Wynik wyszukiwania</target>
+            </trans-unit>
+            <trans-unit id="back">
+                <source>back</source>
+                <target>Powrót</target>
+            </trans-unit>
+            <trans-unit id="label.label_category">
+                <source>label.label_category</source>
+                <target>Kategoria</target>
+            </trans-unit>
+            <trans-unit id="label.avatar">
+                <source>label.avatar</source>
+                <target>Avatar</target>
             </trans-unit>
         </body>
     </file>

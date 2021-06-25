@@ -67,44 +67,6 @@ class TagControllerTest extends WebTestCase
     }
 
     /**
-     * Test index route for non authorized user FOR NEW CATEGORY.
-     */
-    public function testIndexRouteNonAuthorizedUser(): void
-    {
-        // given
-        $expectedStatusCode = 403;
-        $user = $this->createUser([User::ROLE_USER]);
-        $this->logIn($user);
-
-        // when
-        $this->httpClient->request('GET', '/tag/');
-        $resultStatusCode = $this->httpClient->getResponse()->getStatusCode();
-
-        // then
-        $this->assertEquals($expectedStatusCode, $resultStatusCode);
-    }
-
-    /**
-     * Simulate user log in.
-     *
-     * @param User $user User entity
-     */
-    private function logIn(User $user): void
-    {
-        $session = self::$container->get('session');
-
-        $firewallName = 'main';
-        $firewallContext = 'main';
-
-        $token = new UsernamePasswordToken($user, null, $firewallName, $user->getRoles());
-        $session->set('_security_'.$firewallContext, serialize($token));
-        $session->save();
-
-        $cookie = new Cookie($session->getName(), $session->getId());
-        $this->httpClient->getCookieJar()->set($cookie);
-    }
-
-    /**
      * Create user.
      *
      * @param array $roles User roles
@@ -140,5 +102,43 @@ class TagControllerTest extends WebTestCase
         $profileRepository->save($profile);
 
         return $profile;
+    }
+
+    /**
+     * Simulate user log in.
+     *
+     * @param User $user User entity
+     */
+    private function logIn(User $user): void
+    {
+        $session = self::$container->get('session');
+
+        $firewallName = 'main';
+        $firewallContext = 'main';
+
+        $token = new UsernamePasswordToken($user, null, $firewallName, $user->getRoles());
+        $session->set('_security_'.$firewallContext, serialize($token));
+        $session->save();
+
+        $cookie = new Cookie($session->getName(), $session->getId());
+        $this->httpClient->getCookieJar()->set($cookie);
+    }
+
+    /**
+     * Test index route for non authorized user FOR NEW CATEGORY.
+     */
+    public function testIndexRouteNonAuthorizedUser(): void
+    {
+        // given
+        $expectedStatusCode = 403;
+        $user = $this->createUser([User::ROLE_USER]);
+        $this->logIn($user);
+
+        // when
+        $this->httpClient->request('GET', '/tag/');
+        $resultStatusCode = $this->httpClient->getResponse()->getStatusCode();
+
+        // then
+        $this->assertEquals($expectedStatusCode, $resultStatusCode);
     }
 }

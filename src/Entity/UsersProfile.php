@@ -2,6 +2,7 @@
 /*
  * UsersProfile
  */
+
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -10,13 +11,15 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class UsersProfile
+ * Class UsersProfile.
+ *
  * @ORM\Entity(repositoryClass="App\Repository\UsersProfileRepository")
  */
 class UsersProfile
 {
     /**
-     * Primary Key
+     * Primary Key.
+     *
      * @var int
      *
      * @ORM\Id()
@@ -26,7 +29,8 @@ class UsersProfile
     private $id;
 
     /**
-     * Name
+     * Name.
+     *
      * @var string
      *
      * @ORM\Column(type="string", length=255)
@@ -39,7 +43,8 @@ class UsersProfile
     private $name;
 
     /**
-     * Surname
+     * Surname.
+     *
      * @var string
      *
      * @ORM\Column(type="string", length=255)
@@ -51,10 +56,9 @@ class UsersProfile
      */
     private $surname;
 
-
-
     /**
-     * Login
+     * Login.
+     *
      * @var string
      *
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -67,16 +71,18 @@ class UsersProfile
     private $login;
 
     /**
+     * User.
+     *
      * @ORM\OneToOne(targetEntity="App\Entity\User", mappedBy="usersprofile", cascade={"persist", "remove"})
      */
     private $user;
 
     /**
+     * Comments.
+     *
      * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="login")
      */
     private $comments;
-
-
 
     /**
      * UsersProfile constructor.
@@ -106,6 +112,7 @@ class UsersProfile
     {
         return $this->name;
     }
+
     /**
      * Setter for Name.
      *
@@ -144,12 +151,9 @@ class UsersProfile
         return $this;
     }
 
-
-
-
-
     /**
-     * Getter for Login
+     * Getter for Login.
+     *
      * @return string|null City
      */
     public function getLogin(): ?string
@@ -170,7 +174,7 @@ class UsersProfile
     }
 
     /**
-     * Getter for User
+     * Getter for User.
      *
      * @return User|ArrayCollection User
      */
@@ -180,7 +184,7 @@ class UsersProfile
     }
 
     /**
-     * Setter for User
+     * Setter for User.
      *
      * @param User $user User
      *
@@ -201,6 +205,11 @@ class UsersProfile
         return $this->comments;
     }
 
+    /**
+     * @param Comments $comment
+     *
+     * @return $this
+     */
     public function addComment(Comments $comment): self
     {
         if (!$this->comments->contains($comment)) {
@@ -211,6 +220,11 @@ class UsersProfile
         return $this;
     }
 
+    /**
+     * @param Comments $comment
+     *
+     * @return $this
+     */
     public function removeComment(Comments $comment): self
     {
         if ($this->comments->removeElement($comment)) {

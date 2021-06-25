@@ -86,7 +86,7 @@ class User implements UserInterface
     private $roles = [];
 
     /**
-     *
+     * UserProfile
      * @ORM\OneToOne(targetEntity="App\Entity\UsersProfile", inversedBy="user", cascade={"persist", "remove"})
      */
     private $usersprofile;
@@ -241,11 +241,19 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return Avatar|null
+     */
     public function getAvatar(): ?Avatar
     {
         return $this->avatar;
     }
 
+    /**
+     * @param Avatar $avatar
+     *
+     * @return $this
+     */
     public function setAvatar(Avatar $avatar): self
     {
         // set the owning side of the relation if necessary

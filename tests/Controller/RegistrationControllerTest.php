@@ -5,8 +5,10 @@
 
 namespace App\Tests\Controller;
 
+use App\Entity\Category;
 use App\Entity\User;
 use App\Entity\UsersProfile;
+use App\Repository\CategoryRepository;
 use App\Repository\UserRepository;
 use App\Repository\UsersProfileRepository;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -66,43 +68,6 @@ class RegistrationControllerTest extends WebTestCase
     }
 
     /**
-     * Test index route for admin user.
-     */
-    public function testIndexRouteUser(): void
-    {
-        $expectedStatusCode = 200;
-        $adminUser = $this->createUser([User::ROLE_USER]);
-        $this->logIn($adminUser);
-
-        // when
-        $this->httpClient->request('GET', '/register/');
-        $resultStatusCode = $this->httpClient->getResponse()->getStatusCode();
-
-        // then
-        $this->assertEquals($expectedStatusCode, $resultStatusCode);
-    }
-
-    /**
-     * Simulate user log in.
-     *
-     * @param User $user User entity
-     */
-    private function logIn(User $user): void
-    {
-        $session = self::$container->get('session');
-
-        $firewallName = 'main';
-        $firewallContext = 'main';
-
-        $token = new UsernamePasswordToken($user, null, $firewallName, $user->getRoles());
-        $session->set('_security_'.$firewallContext, serialize($token));
-        $session->save();
-
-        $cookie = new Cookie($session->getName(), $session->getId());
-        $this->httpClient->getCookieJar()->set($cookie);
-    }
-
-    /**
      * Create user.
      *
      * @param array $roles User roles
@@ -138,5 +103,42 @@ class RegistrationControllerTest extends WebTestCase
         $profileRepository->save($profile);
 
         return $profile;
+    }
+
+    /**
+     * Simulate user log in.
+     *
+     * @param User $user User entity
+     */
+    private function logIn(User $user): void
+    {
+        $session = self::$container->get('session');
+
+        $firewallName = 'main';
+        $firewallContext = 'main';
+
+        $token = new UsernamePasswordToken($user, null, $firewallName, $user->getRoles());
+        $session->set('_security_'.$firewallContext, serialize($token));
+        $session->save();
+
+        $cookie = new Cookie($session->getName(), $session->getId());
+        $this->httpClient->getCookieJar()->set($cookie);
+    }
+
+    /**
+     * Test index route for admin user.
+     */
+    public function testIndexRouteUser(): void
+    {
+        $expectedStatusCode = 200;
+        $adminUser = $this->createUser([User::ROLE_USER]);
+        $this->logIn($adminUser);
+
+        // when
+        $this->httpClient->request('GET', '/register/');
+        $resultStatusCode = $this->httpClient->getResponse()->getStatusCode();
+
+        // then
+        $this->assertEquals($expectedStatusCode, $resultStatusCode);
     }
 }

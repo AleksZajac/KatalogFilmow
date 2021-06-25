@@ -1,12 +1,15 @@
 <?php
+/*
+ * Tag Entoty
+ */
 
 namespace App\Entity;
 
-use App\Repository\TagRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Tag.
@@ -27,6 +30,10 @@ class Tag
      */
     const NUMBER_OF_ITEMS = 10;
     /**
+     * Primary kry.
+     *
+     * @var int
+     *
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -34,12 +41,26 @@ class Tag
     private $id;
 
     /**
+     * Name.
+     *
+     * @var string
+     *
      * @ORM\Column(type="string", length=64)
+     *
+     * @Assert\NotBlank
+     * @Assert\Type (type="string)
+     * @Assert\Length (
+     *     allowEmptyString="false",
+     *      min="3",
+     *     max="64"
      */
     private $name;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection|\App\Entity\Films[] Films
+     * Films.
+     *
+     * @var ArrayCollection|Films[] Films
+     *
      * @ORM\ManyToMany(targetEntity=Films::class, mappedBy="tags")
      */
     private $films;
@@ -62,6 +83,9 @@ class Tag
         return $this->name;
     }
 
+    /**
+     * @return $this
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -70,7 +94,7 @@ class Tag
     }
 
     /**
-     * @return \Doctrine\Common\Collections\Collection|\App\Entity\Films[] Films collection
+     * @return Collection|Films[] Films collection
      */
     public function getFilms(): Collection
     {
@@ -80,7 +104,7 @@ class Tag
     /**
      * Add task to collection.
      *
-     * @param \App\Entity\Films $film Film entity
+     * @param Films $film Film entity
      */
     public function addFilm(Films $film): self
     {
@@ -95,7 +119,7 @@ class Tag
     /**
      * Remove task from collection.
      *
-     * @param \App\Entity\Films $film Film entity
+     * @param Films $film Film entity
      */
     public function removeFilm(Films $film): self
     {

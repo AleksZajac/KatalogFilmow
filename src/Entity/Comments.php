@@ -1,13 +1,21 @@
 <?php
+/*
+ *  Comment Entity
+ */
 
 namespace App\Entity;
 
 use App\Repository\CommentsRepository;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass=CommentsRepository::class)
+ * Class Comment.
+ *
+ * @ORM\Entity(repositoryClass="App\Repository\CommentsRepository", repositoryClass=CommentsRepository::class)
+ * @ORM\Table (name="comments")
  */
 class Comments
 {
@@ -20,6 +28,10 @@ class Comments
      */
     const NUMBER_OF_ITEMS = 10;
     /**
+     * Primary Key.
+     *
+     * @var int
+     *
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -27,41 +39,68 @@ class Comments
     private $id;
 
     /**
+     * Content.
+     *
      * @ORM\Column(type="text")
+     *
+     * @Assert\Type (type="text")
+     * @Assert\NotBlank
+     * @Assert\Length (
+     *     allowEmptyString="false",
+     *     min="3",
+     *     max="1000",
+     * )
      */
     private $content;
 
     /**
+     * Created At.
+     *
      * @var DateTimeInterface
+     *
      * @ORM\Column(type="datetime")
+     *
+     * @Assert\Type (type="\DateRimeInterface")
+     *
      * @Gedmo\Timestampable(on="create")
      */
     private $date;
 
     /**
+     * Films.
+     *
      * @ORM\ManyToOne(targetEntity=Films::class, inversedBy="comment")
      * @ORM\JoinColumn(nullable=false)
      */
     private $films;
 
     /**
+     * UserProfile.
+     *
      * @ORM\ManyToOne(targetEntity=UsersProfile::class, inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)
      */
     private $login;
 
-
-
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getContent(): ?string
     {
         return $this->content;
     }
 
+    /**
+     * @return $this
+     */
     public function setContent(string $content): self
     {
         $this->content = $content;
@@ -69,12 +108,18 @@ class Comments
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    /**
+     * @return DateTimeInterface|null
+     */
+    public function getDate(): ?DateTimeInterface
     {
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    /**
+     * @return $this
+     */
+    public function setDate(DateTimeInterface $date): self
     {
         $this->date = $date;
 
@@ -86,9 +131,7 @@ class Comments
         return $this->films;
     }
 
-
     /**
-     * @param Films|null $films
      * @return $this
      */
     public function setFilms(?Films $films): self
@@ -98,11 +141,18 @@ class Comments
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
     public function getLogin()
     {
         return $this->login;
     }
 
+
+    /**
+     * @return $this
+     */
     public function setLogin(?UsersProfile $login)
     {
         $this->login = $login;

@@ -10,6 +10,8 @@ use App\Entity\UsersProfile;
 use App\Repository\UserRepository;
 use App\Repository\UsersProfileRepository;
 use App\Service\UserService;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
@@ -41,8 +43,8 @@ class UserServiceTest extends KernelTestCase
     /**
      * Test save.
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function testSave(): void
     {
@@ -79,8 +81,8 @@ class UserServiceTest extends KernelTestCase
     /**
      * Test delete.
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function testDelete(): void
     {
@@ -104,8 +106,8 @@ class UserServiceTest extends KernelTestCase
     /**
      * Test find by id.
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function testFindById(): void
     {

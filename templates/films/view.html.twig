@@ -21,10 +21,11 @@
             {{ 'action.delete_photo'|trans }}
         </a>
     {% else %}
+    {% if is_granted('ROLE_ADMIN') %}
     <a class="btn btn-outline-success " href="{{ url('photos_create', {id: film.id})}}" title="{{ 'action.add_photo'|trans }}">
         {{ 'action.add_photo'|trans }}
     </a>
-
+    {% endif %}
     {% endif %}
 
     {% if film is defined and film|length %}
@@ -44,15 +45,17 @@
 
         </dl>
 
-
+        {% if is_granted('ROLE_USER') %}
           <a class="btn btn-primary prawa" href="{{ url('favorite_new', {'id': film.id})}}" title="{{ 'action.back_to_list'|trans }}">
             {{ 'action.add_favorite'|trans }}
         </a>
-
+        {% endif %}
         <h3 class="login-heading mb-4">{{ 'title.comments'|trans }}</h3>
+        {% if is_granted('ROLE_USER') %}
         <a class="btn btn-primary prawa" href="{{ url('add_comment', {'id': film.id})}}" title="{{ 'action.back_to_list'|trans }}">
             {{ 'action.add_comment'|trans }}
         </a>
+        {% endif %}
         {% if comments is defined %}
             {% for comment in comments %}
                 <dl class="dl-horizontal">

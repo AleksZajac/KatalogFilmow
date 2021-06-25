@@ -12,6 +12,8 @@ use App\Repository\FilmsRepository;
 use App\Service\CategoryService;
 use App\Service\FilmsService;
 use App\Service\TagService;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -30,26 +32,26 @@ class FilmsController extends AbstractController
     /**
      * Film service.
      *
-     * @var \App\Service\FilmsService
+     * @var FilmsService
      */
     private $filmsService;
     /**
      * Category service.
      *
-     * @var \App\Service\CategoryService
+     * @var CategoryService
      */
     private $categoryService;
     /**
      * Tag service.
      *
-     * @var \App\Service\TagService
+     * @var TagService
      */
     private $tagService;
 
     /**
      * CategoryController constructor.
      *
-     * @param \App\Service\FilmsService $filmsService Category service
+     * @param FilmsService $filmsService Category service
      */
     public function __construct(FilmsService $filmsService, CategoryService $categoryService, TagService $tagService)
     {
@@ -61,10 +63,10 @@ class FilmsController extends AbstractController
     /**
      * Index action.
      *
-     * @param \Knp\Component\Pager\PaginatorInterface   $paginator Paginator
-     * @param \Symfony\Component\HttpFoundation\Request $request   HTTP request
+     * @param PaginatorInterface $paginator Paginator
+     * @param Request $request   HTTP request
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
      * @Route(
      *     "/",
@@ -96,6 +98,7 @@ class FilmsController extends AbstractController
                 Films::NUMBER_OF_ITEMS
             );
 
+
             return $this->render(
                 'films/searchView.html.twig',
                 ['pagination' => $pagination]
@@ -115,9 +118,9 @@ class FilmsController extends AbstractController
     /**
      * View action.
      *
-     * @param \App\Entity\Films $film Film Entity*
+     * @param Films $film Film Entity*
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
      * @Route(
      *     "/{id}",
@@ -141,12 +144,12 @@ class FilmsController extends AbstractController
     /**
      * New action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request*
+     * @param Request $request HTTP request*
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/new",
@@ -176,13 +179,13 @@ class FilmsController extends AbstractController
     /**
      * Edit action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @param \App\Entity\Films                         $film    Films entity*
+     * @param Request $request HTTP request
+     * @param Films $film    Films entity*
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/edit",
@@ -216,14 +219,14 @@ class FilmsController extends AbstractController
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Entity\Films                         $film       Film entity
-     * @param \App\Repository\FilmsRepository           $repository Film repository
+     * @param Request $request    HTTP request
+     * @param Films $film       Film entity
+     * @param FilmsRepository $repository Film repository
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/delete",
@@ -260,9 +263,9 @@ class FilmsController extends AbstractController
     /**
      * Search action.
      *
-     * @param \App\Entity\Films $film Film entity
+     * @param Films $film Film entity
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
      * @Route(
      *     "/search",

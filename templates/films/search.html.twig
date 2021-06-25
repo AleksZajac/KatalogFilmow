@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-    {% include 'nav.html.twig' %}
+
     <div class="container">
         {{ form_start(form, { method: 'POST', action: url('film_search', name) }) }}
         {{ form_widget(form) }}

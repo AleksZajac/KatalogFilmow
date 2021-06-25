@@ -9,11 +9,17 @@ use App\Repository\FilmsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use phpDocumentor\Reflection\Types\String_;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * Class Films.
+ *
+ * @ORM\Table (name="films")
  * @ORM\Entity(repositoryClass="App\Repository\FilmsRepository", repositoryClass=FilmsRepository::class)
+ *
+ * @UniqueEntity (fields="title", message="Title already taken")
+
  */
 class Films
 {
@@ -28,6 +34,8 @@ class Films
     /**
      * Primary key.
      *
+     * @var int
+     *
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -37,7 +45,16 @@ class Films
     /**
      * Title.
      *
+     * @var string
+     *
      * @ORM\Column(type="string", length=64)
+     *
+     * @Assert\Type (type="string")
+     * @Assert\NotBlank
+     * @Assert\Length (
+     *     allowEmptyString="false",
+     *     min="3",
+     *     max="64"
      */
     private $title;
 
@@ -45,6 +62,13 @@ class Films
      * Description.
      *
      * @ORM\Column(type="text", nullable=true)
+     *
+     * @Assert\Type (type="text")
+     * @Assert\NotBlank
+     *      * @Assert\Length (
+     *     allowEmptyString="false",
+     *     min="3",
+     *     max="1000"
      */
     private $description;
     /**
@@ -52,41 +76,51 @@ class Films
      *
      * @ORM\Column(type="string")
      *
+     * @Assert\NotBlank
      * @Assert\Date
      */
     private $releasedate;
 
     /**
+     * Comment.
+     *
      * @ORM\OneToMany(targetEntity=Comments::class, mappedBy="films", cascade={"persist","remove"})
      */
     private $comment;
 
     /**
+     * Category.
+     *
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="films")
      * @ORM\JoinColumn(nullable=true)
      */
     private $category;
 
     /**
-     * Tags
+     * Tags.
+     *
      * @var array
+     *
      * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="films", fetch="EXTRA_LAZY",)
      * @ORM\JoinTable(name="films_tags")
+     *
      * @Assert\Type(type="Doctrine\Common\Collections\Collection")
      */
     private $tags;
 
     /**
+     * Photo.
+     *
      * @ORM\OneToOne(targetEntity=Photo::class, mappedBy="films", cascade={"persist", "remove"})
      */
     private $photo;
 
     /**
+     * FavoriteMovies.
+     *
      * @ORM\ManyToMany(targetEntity=FavoriteMovies::class, mappedBy="id_film", fetch="EXTRA_LAZY")
      */
     private $favoriteMovies;
-
-
 
     /**
      * Film constructor.
@@ -149,6 +183,7 @@ class Films
 
     /**
      * Getter for ReleaseDate.
+     *
      * @return string | array RelaseDate
      */
     public function getReleaseDate(): ?string
@@ -176,6 +211,9 @@ class Films
         return $this->comment;
     }
 
+    /**
+     * @return $this
+     */
     public function addComment(Comments $comment): self
     {
         if (!$this->comment->contains($comment)) {
@@ -186,6 +224,9 @@ class Films
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function removeComment(Comments $comment): self
     {
         if ($this->comment->removeElement($comment)) {
@@ -198,11 +239,17 @@ class Films
         return $this;
     }
 
+    /**
+     * @return Category|null
+     */
     public function getCategory(): ?Category
     {
         return $this->category;
     }
 
+    /**
+     * @return $this
+     */
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
@@ -213,7 +260,7 @@ class Films
     /**
      * Getter for tags.
      *
-     * @return \Doctrine\Common\Collections\Collection|\App\Entity\Tag[] Tags collection
+     * @return Collection|Tag[] Tags collection
      */
     public function getTags(): Collection
     {
@@ -223,7 +270,7 @@ class Films
     /**
      * Add tag to collection.
      *
-     * @param \App\Entity\Tag $tag Tag entity
+     * @param Tag $tag Tag entity
      */
     public function addTag(Tag $tag): self
     {
@@ -237,7 +284,7 @@ class Films
     /**
      * Remove tag from collection.
      *
-     * @param \App\Entity\Tag $tag Tag entity
+     * @param Tag $tag Tag entity
      */
     public function removeTag(Tag $tag): self
     {
@@ -246,11 +293,17 @@ class Films
         }
     }
 
+    /**
+     * @return Photo|null
+     */
     public function getFileName(): ?Photo
     {
         return $this->fileName;
     }
 
+    /**
+     * @return $this
+     */
     public function setFileName(Photo $fileName): self
     {
         // set the owning side of the relation if necessary
@@ -263,11 +316,17 @@ class Films
         return $this;
     }
 
+    /**
+     * @return Photo|null
+     */
     public function getPhoto(): ?Photo
     {
         return $this->photo;
     }
 
+    /**
+     * @return $this
+     */
     public function setPhoto(Photo $photo): self
     {
         // set the owning side of the relation if necessary
@@ -281,13 +340,16 @@ class Films
     }
 
     /**
-     * @return \App\Entity\FavoriteMovies
+     * @return Collection
      */
     public function getFavoriteMovies(): Collection
     {
         return $this->favoriteMovies;
     }
 
+    /**
+     * @return $this
+     */
     public function addFavoriteMovie(FavoriteMovies $favoriteMovie): self
     {
         if (!$this->favoriteMovies->contains($favoriteMovie)) {
@@ -298,6 +360,9 @@ class Films
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function removeFavoriteMovie(FavoriteMovies $favoriteMovie): self
     {
         if ($this->favoriteMovies->removeElement($favoriteMovie)) {

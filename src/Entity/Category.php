@@ -9,6 +9,7 @@ use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository", repositoryClass=CategoryRepository::class)
@@ -26,6 +27,8 @@ class Category
     /**
      * Primary key.
      *
+     * @var int
+     *
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -36,14 +39,27 @@ class Category
      * Title.
      *
      * @ORM\Column(type="string", length=64)
+     *
+     * @Assert\Type (type="string")
+     * @Assert\NotBlank
+     * @Assert\Length (
+     *     allowEmptyString=false,
+     *     min="3",
+     *     max="32"
+     *     )
      */
     private $name;
 
     /**
+     * @var ArrayCollection|Films[] Films
+     *
      * @ORM\OneToMany(targetEntity=Films::class, mappedBy="category")
      */
     private $films;
 
+    /**
+     * Category constructor.
+     */
     public function __construct()
     {
         $this->films = new ArrayCollection();
@@ -51,6 +67,7 @@ class Category
 
     /**
      * Getter for Id.
+     * @return int|null Result
      */
     public function getId(): ?int
     {
@@ -59,6 +76,7 @@ class Category
 
     /**
      * Getter for Name.
+     * @return string|null Name
      */
     public function getName(): ?string
     {
@@ -87,6 +105,11 @@ class Category
         return $this->films;
     }
 
+    /**
+     * @param Films $film Film Entity
+     *
+     * @return $this
+     */
     public function addFilm(Films $film): self
     {
         if (!$this->films->contains($film)) {
@@ -97,6 +120,11 @@ class Category
         return $this;
     }
 
+    /**
+     * @param Films $film
+     *
+     * @return $this
+     */
     public function removeFilm(Films $film): self
     {
         if ($this->films->removeElement($film)) {
