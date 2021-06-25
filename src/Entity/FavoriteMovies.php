@@ -76,7 +76,7 @@ class FavoriteMovies
     }
 
     /**
-     * @return \Doctrine\Common\Collections\Collection|\App\Entity\Films[]
+     * @return Collection|Films[]
      */
     public function getIdFilm(): Collection
     {

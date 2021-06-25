@@ -378,6 +378,46 @@
                 <source>label.avatar</source>
                 <target>Avatar</target>
             </trans-unit>
+            <trans-unit id="title.register">
+                <source>title.register</source>
+                <target>Rejestracja</target>
+            </trans-unit>
+            <trans-unit id="message.empty_list">
+                <source>message.empty_list</source>
+                <target>Lista jest pusta</target>
+            </trans-unit>
+            <trans-unit id="action_create">
+                <source>action_create</source>
+                <target>Stwórz</target>
+            </trans-unit>
+            <trans-unit id="title.film.list">
+                <source>title.film.list</source>
+                <target>Lista filmów</target>
+            </trans-unit>
+            <trans-unit id="action.photo_avatar">
+                <source>action.photo_avatar</source>
+                <target>Zdjęcie avatar</target>
+            </trans-unit>
+            <trans-unit id="title.film_search">
+                <source>title.film_search</source>
+                <target>Wyszukiwanie filmów</target>
+            </trans-unit>
+            <trans-unit id="search">
+                <source>search</source>
+                <target>Szukaj</target>
+            </trans-unit>
+            <trans-unit id="message.form_error">
+                <source>message.form_error</source>
+                <target>Formularz - error</target>
+            </trans-unit>
+            <trans-unit id="message_form_error">
+                <source>message_form_error</source>
+                <target>Formularz - error</target>
+            </trans-unit>
+            <trans-unit id="action.add_tag">
+                <source>action.add_tag</source>
+                <target>Dodaj Tag</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
