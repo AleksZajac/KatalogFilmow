@@ -34,6 +34,7 @@ class FavoriteMoviesRepository extends ServiceEntityRepository
 
     /**
      * FavoriteMoviesRepository constructor.
+     * @param ManagerRegistry $registry
      */
     public function __construct(ManagerRegistry $registry)
     {
@@ -42,6 +43,8 @@ class FavoriteMoviesRepository extends ServiceEntityRepository
 
     /**
      * Query all records.
+     *
+     * @param int $id
      *
      * @return QueryBuilder Query builder
      */

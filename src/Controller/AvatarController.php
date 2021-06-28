@@ -50,8 +50,8 @@ class AvatarController extends AbstractController
      * AvatarController constructor.
      *
      * @param AvatarRepository $avatarRepository Avatar repository
-     * @param Filesystem $filesystem       Filesystem component
-     * @param FileUploader $fileUploader     File uploader
+     * @param Filesystem       $filesystem       Filesystem component
+     * @param FileUploader     $fileUploader     File uploader
      */
     public function __construct(AvatarRepository $avatarRepository, Filesystem $filesystem, FileUploader $fileUploader)
     {
@@ -111,7 +111,7 @@ class AvatarController extends AbstractController
      * Edit action.
      *
      * @param Request $request HTTP request
-     * @param Avatar $avatar  Avatar
+     * @param Avatar  $avatar  Avatar
      *
      * @return Response HTTP response
      *
@@ -158,8 +158,8 @@ class AvatarController extends AbstractController
     /**
      * Delete action.
      *
-     * @param Request $request    HTTP request
-     * @param Avatar $avatar     Tag entity
+     * @param Request          $request    HTTP request
+     * @param Avatar           $avatar     Tag entity
      * @param AvatarRepository $repository Tag repository
      *
      * @return Response HTTP response

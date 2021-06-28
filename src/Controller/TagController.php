@@ -47,9 +47,6 @@ class TagController extends AbstractController
     /**
      * Index action.
      *
-     * @param PaginatorInterface $paginator Paginator
-     * @param Request            $request   HTTP request
-     *
      * @return Response HTTP response
      *
      * @Route(

@@ -28,7 +28,7 @@ class UserService
     /**
      * UserService constructor.
      *
-     * @param UserRepository $userRepository Users repository
+     * @param UserRepository     $userRepository Users repository
      * @param PaginatorInterface $paginator      Paginator
      */
     public function __construct(UserRepository $userRepository, PaginatorInterface $paginator)

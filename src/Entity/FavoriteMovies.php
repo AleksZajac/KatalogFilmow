@@ -48,6 +48,9 @@ class FavoriteMovies
      */
     private $user;
 
+    /**
+     * FavoriteMovies constructor.
+     */
     public function __construct()
     {
         $this->film = new ArrayCollection();
@@ -70,6 +73,11 @@ class FavoriteMovies
         return $this->film;
     }
 
+    /**
+     * @param Films $film
+     *
+     * @return $this
+     */
     public function addFilm(Films $film): self
     {
         if (!$this->film->contains($film)) {
@@ -79,6 +87,11 @@ class FavoriteMovies
         return $this;
     }
 
+    /**
+     * @param Films $film
+     *
+     * @return $this
+     */
     public function removeFilm(Films $film): self
     {
         $this->film->removeElement($film);
@@ -86,11 +99,19 @@ class FavoriteMovies
         return $this;
     }
 
+    /**
+     * @return User|null
+     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
+    /**
+     * @param User|null $user
+     *
+     * @return $this
+     */
     public function setUser(?User $user): self
     {
         $this->user = $user;

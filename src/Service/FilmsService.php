@@ -47,10 +47,10 @@ class FilmsService
     /**
      * FilmsService constructor.
      *
-     * @param FilmsRepository $filmsRepository Category repository
+     * @param FilmsRepository    $filmsRepository Category repository
      * @param PaginatorInterface $paginator       Paginator
-     * @param CategoryService $categoryService Category service
-     * @param TagService $tagService      Tag service
+     * @param CategoryService    $categoryService Category service
+     * @param TagService         $tagService      Tag service
      */
     public function __construct(FilmsRepository $filmsRepository, PaginatorInterface $paginator, CategoryService $categoryService, TagService $tagService)
     {

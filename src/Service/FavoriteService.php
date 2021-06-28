@@ -35,7 +35,7 @@ class FavoriteService
      * CategoryService constructor.
      *
      * @param FavoriteMoviesRepository $favoriteMoviesRepository Tag repository
-     * @param PaginatorInterface $paginator                Paginator
+     * @param PaginatorInterface       $paginator                Paginator
      */
     public function __construct(FavoriteMoviesRepository $favoriteMoviesRepository, PaginatorInterface $paginator)
     {

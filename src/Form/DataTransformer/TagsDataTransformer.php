@@ -7,6 +7,7 @@ namespace App\Form\DataTransformer;
 
 use App\Entity\Tag;
 use App\Service\TagService;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Symfony\Component\Form\DataTransformerInterface;
@@ -19,14 +20,14 @@ class TagsDataTransformer implements DataTransformerInterface
     /**
      * Tag service.
      *
-     * @var \App\Service\TagService
+     * @var TagService
      */
     private $tagService;
 
     /**
      * TagsDataTransformer constructor.
      *
-     * @param \App\Service\TagService $tagService Tag service
+     * @param TagService $tagService Tag service
      */
     public function __construct(TagService $tagService)
     {
@@ -36,7 +37,7 @@ class TagsDataTransformer implements DataTransformerInterface
     /**
      * Transform array of tags to string of names.
      *
-     * @param \Doctrine\Common\Collections\Collection $tags Tags entity collection
+     * @param Collection $tags Tags entity collection
      *
      * @return string Result
      */

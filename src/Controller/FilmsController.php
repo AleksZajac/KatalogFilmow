@@ -117,7 +117,7 @@ class FilmsController extends AbstractController
     /**
      * View action.
      *
-     * @param Films $film Film Entity*
+     * @param Films $film Film Entity
      * @param $id
      *
      * @return Response HTTP response

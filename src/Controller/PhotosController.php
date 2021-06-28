@@ -36,21 +36,21 @@ class PhotosController extends AbstractController
     /**
      * File uploader.
      *
-     * @var \App\Service\FileUp
+     * @var FileUp
      */
     private $fileUp;
     /**
      * Filesystem component.
      *
-     * @var \Symfony\Component\Filesystem\Filesystem
+     * @var Filesystem
      */
     private $filesystem;
 
     /**
      * PhotosController constructor.
      *
-     * @param PhotoRepository     $photoRepository Avatar repository
-     * @param \App\Service\FileUp $fileUp          File uploader
+     * @param PhotoRepository $photoRepository Avatar repository
+     * @param FileUp          $fileUp          File uploader
      */
     public function __construct(PhotoRepository $photoRepository, FileUp $fileUp, Filesystem $filesystem)
     {

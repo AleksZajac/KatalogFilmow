@@ -25,6 +25,7 @@ class FilmsRepository extends ServiceEntityRepository
 {
     /**
      * FilmsRepository constructor.
+     * @param ManagerRegistry $registry
      */
     public function __construct(ManagerRegistry $registry)
     {

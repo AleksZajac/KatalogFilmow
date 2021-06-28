@@ -119,6 +119,7 @@ class User implements UserInterface
 
     /**
      * Getter for Email.
+     * @return string|null
      */
     public function getEmail(): ?string
     {
@@ -183,6 +184,8 @@ class User implements UserInterface
     /**
      * Getter for the Roles.
      *
+     * @return array
+     *
      * @see UserInterface
      */
     public function getRoles(): array
@@ -224,6 +227,8 @@ class User implements UserInterface
     }
 
     /**
+     * @param UsersProfile $usersprofile
+     *
      * @return User
      */
     public function setUsersprofile(UsersProfile $usersprofile): self
@@ -236,12 +241,17 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return Avatar|null
+     */
     public function getAvatar(): ?Avatar
     {
         return $this->avatar;
     }
 
     /**
+     * @param Avatar $avatar
+     *
      * @return $this
      */
     public function setAvatar(Avatar $avatar): self
@@ -256,11 +266,19 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return FavoriteMovies|null
+     */
     public function getFavoriteMovies(): ?FavoriteMovies
     {
         return $this->favoriteMovies;
     }
 
+    /**
+     * @param FavoriteMovies|null $favoriteMovies
+     *
+     * @return $this
+     */
     public function setFavoriteMovies(?FavoriteMovies $favoriteMovies): self
     {
         // unset the owning side of the relation if necessary

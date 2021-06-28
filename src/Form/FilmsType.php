@@ -10,6 +10,7 @@ use App\Entity\Films;
 use App\Form\DataTransformer\TagsDataTransformer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -20,14 +21,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class FilmsType extends AbstractType
 {
     /**
-     * @var \App\Form\DataTransformer\TagsDataTransformer
+     * @var TagsDataTransformer
      */
     private $tagsDataTransformer;
 
     /**
      * TaskType constructor.
      *
-     * @param \App\Form\DataTransformer\TagsDataTransformer $tagsDataTransformer Tags data transformer
+     * @param TagsDataTransformer $tagsDataTransformer Tags data transformer
      */
     public function __construct(TagsDataTransformer $tagsDataTransformer)
     {
@@ -67,7 +68,7 @@ class FilmsType extends AbstractType
         );
         $builder->add(
             'releasedate',
-            \Symfony\Component\Form\Extension\Core\Type\DateType::class,
+            DateType::class,
             [
                 'label' => 'Data premiery',
             'input' => 'string',

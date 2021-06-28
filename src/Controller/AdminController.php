@@ -29,13 +29,13 @@ class AdminController extends AbstractController
     /**
      * Favorite service.
      *
-     * @var \App\Repository\FavoriteMoviesRepository
+     * @var FavoriteMoviesRepository
      */
     private $favoriteMoviesRepository;
     /**
      * Favorite service.
      *
-     * @var \App\Service\UserService
+     * @var UserService
      */
     private $userService;
 
