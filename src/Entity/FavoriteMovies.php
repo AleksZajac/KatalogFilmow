@@ -39,32 +39,19 @@ class FavoriteMovies
     private $id;
 
     /**
-     * Films.
-     *
-     * @var Films
-     *
-     * @ORM\ManyToMany(targetEntity=Films::class)
-     *
-     * @Assert\Type(type="Doctrine\Common\Collections\Collection")
+     * @ORM\ManyToMany(targetEntity=Films::class, inversedBy="favoriteMovies")
      */
-    private $id_film;
+    private $film;
 
     /**
-     * User.
-     *
-     * @var User
-     *
-     * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=User::class, inversedBy="favoriteMovies", cascade={"persist", "remove"})
      */
-    private $id_user;
+    private $user;
 
-    /**
-     * FavoriteMovies constructor.
-     */
     public function __construct()
     {
-        $this->id_film = new ArrayCollection();
-        $this->id_user = new ArrayCollection();
+        $this->film = new ArrayCollection();
+        $this->user = new ArrayCollection();
     }
 
     /**
@@ -78,53 +65,35 @@ class FavoriteMovies
     /**
      * @return Collection|Films[]
      */
-    public function getIdFilm(): Collection
+    public function getFilm(): Collection
     {
-        return $this->id_film;
+        return $this->film;
     }
 
-    /**
-     * @param Films $idFilm
-     *
-     * @return $this
-     */
-    public function addIdFilm(Films $idFilm): self
+    public function addFilm(Films $film): self
     {
-        if (!$this->id_film->contains($idFilm)) {
-            $this->id_film[] = $idFilm;
+        if (!$this->film->contains($film)) {
+            $this->film[] = $film;
         }
 
         return $this;
     }
 
-    /**
-     * @param Films $idFilm
-     *
-     * @return $this
-     */
-    public function removeIdFilm(Films $idFilm): FavoriteMovies
+    public function removeFilm(Films $film): self
     {
-        $this->id_film->removeElement($idFilm);
+        $this->film->removeElement($film);
 
         return $this;
     }
 
-    /**
-     * @return User|ArrayCollection
-     */
-    public function getIdUser()
+    public function getUser(): ?User
     {
-        return $this->id_user;
+        return $this->user;
     }
 
-    /**
-     * @param User|null $id_user
-     *
-     * @return $this
-     */
-    public function setIdUser(?User $id_user)
+    public function setUser(?User $user): self
     {
-        $this->id_user = $id_user;
+        $this->user = $user;
 
         return $this;
     }

@@ -59,7 +59,6 @@ class User implements UserInterface
      *
      * @Assert\NotBlank
      * @Assert\Email
-     *
      */
     private $email;
 
@@ -76,8 +75,6 @@ class User implements UserInterface
      */
     private $password;
 
-
-
     /**
      * Roles.
      *
@@ -86,7 +83,8 @@ class User implements UserInterface
     private $roles = [];
 
     /**
-     * UserProfile
+     * UserProfile.
+     *
      * @ORM\OneToOne(targetEntity="App\Entity\UsersProfile", inversedBy="user", cascade={"persist", "remove"})
      */
     private $usersprofile;
@@ -96,7 +94,10 @@ class User implements UserInterface
      */
     private $avatar;
 
-
+    /**
+     * @ORM\OneToOne(targetEntity=FavoriteMovies::class, mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $favoriteMovies;
 
     /**
      * User constructor.
@@ -118,8 +119,6 @@ class User implements UserInterface
 
     /**
      * Getter for Email.
-     *
-     * @return string|null
      */
     public function getEmail(): ?string
     {
@@ -181,7 +180,6 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
-
     /**
      * Getter for the Roles.
      *
@@ -218,7 +216,6 @@ class User implements UserInterface
     }
 
     /**
-     *
      * @return ArrayCollection|UsersProfile
      */
     public function getUsersprofile()
@@ -227,8 +224,6 @@ class User implements UserInterface
     }
 
     /**
-     * @param UsersProfile $usersprofile
-     *
      * @return User
      */
     public function setUsersprofile(UsersProfile $usersprofile): self
@@ -241,17 +236,12 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return Avatar|null
-     */
     public function getAvatar(): ?Avatar
     {
         return $this->avatar;
     }
 
     /**
-     * @param Avatar $avatar
-     *
      * @return $this
      */
     public function setAvatar(Avatar $avatar): self
@@ -262,6 +252,28 @@ class User implements UserInterface
         }
 
         $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    public function getFavoriteMovies(): ?FavoriteMovies
+    {
+        return $this->favoriteMovies;
+    }
+
+    public function setFavoriteMovies(?FavoriteMovies $favoriteMovies): self
+    {
+        // unset the owning side of the relation if necessary
+        if (null === $favoriteMovies && null !== $this->favoriteMovies) {
+            $this->favoriteMovies->setUser(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if (null !== $favoriteMovies && $favoriteMovies->getUser() !== $this) {
+            $favoriteMovies->setUser($this);
+        }
+
+        $this->favoriteMovies = $favoriteMovies;
 
         return $this;
     }

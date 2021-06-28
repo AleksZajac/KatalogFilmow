@@ -10,6 +10,8 @@ use App\Entity\Films;
 use App\Entity\Tag;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Expr\Value;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -45,7 +47,7 @@ class FilmsRepository extends ServiceEntityRepository
      *
      * @param array $filters Filters array
      *
-     * @return \Doctrine\ORM\QueryBuilder Query builder
+     * @return QueryBuilder Query builder
      */
     public function queryAll(array $filters = []): QueryBuilder
     {
@@ -56,46 +58,10 @@ class FilmsRepository extends ServiceEntityRepository
             )
             ->join('film.category', 'category')
 
-
             ->orderBy('film.title', 'DESC');
         $queryBuilder = $this->applyFiltersToList($queryBuilder, $filters);
 
         return $queryBuilder;
-    }
-
-    /**
-     * Apply filters to paginated list.
-     *
-     * @param \Doctrine\ORM\QueryBuilder $queryBuilder Query builder
-     * @param array                      $filters      Filters array
-     *
-     * @return \Doctrine\ORM\QueryBuilder Query builder
-     */
-    private function applyFiltersToList(QueryBuilder $queryBuilder, array $filters = []): QueryBuilder
-    {
-        if (isset($filters['category']) && $filters['category'] instanceof Category) {
-            $queryBuilder->andWhere('category = :category')
-                ->setParameter('category', $filters['category']);
-        }
-
-        if (isset($filters['tag']) && $filters['tag'] instanceof Tag) {
-            $queryBuilder->andWhere('tags IN (:tag)')
-                ->setParameter('tag', $filters['tag']);
-        }
-
-        return $queryBuilder;
-    }
-
-    /**
-     * Get or create new query builder.
-     *
-     * @param \Doctrine\ORM\QueryBuilder|null $queryBuilder Query builder
-     *
-     * @return \Doctrine\ORM\QueryBuilder Query builder
-     */
-    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
-    {
-        return $queryBuilder ?: $this->createQueryBuilder('film');
     }
 
     /**
@@ -120,10 +86,10 @@ class FilmsRepository extends ServiceEntityRepository
     /**
      * Save record.
      *
-     * @param \App\Entity\Films $film Tag entity
+     * @param Films $film Tag entity
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function save(Films $film): void
     {
@@ -131,39 +97,12 @@ class FilmsRepository extends ServiceEntityRepository
         $this->_em->flush($film);
     }
 
-    // /**
-    //  * @return Films[] Returns an array of Films objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('f.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Films
-    {
-        return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
-
     /**
      * Query Films by name.
      *
      * @param null $id
+     *
+     * @return int|mixed|string
      */
     public function queryById($id = null)
     {
@@ -182,7 +121,7 @@ class FilmsRepository extends ServiceEntityRepository
      *
      * @param null $id
      *
-     * @return \Doctrine\ORM\QueryBuilder Query builder
+     * @return QueryBuilder Query builder
      */
     public function queryById1($id = null): QueryBuilder
     {
@@ -199,25 +138,27 @@ class FilmsRepository extends ServiceEntityRepository
     /**
      * Delete record.
      *
-     * @param \App\Entity\Films $film Film entity
+     * @param Films $film Film entity
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function delete(Films $film)
     {
         $this->_em->remove($film);
         $this->_em->flush($film);
     }
+
     /**
-     * Query film by name
+     * Query film by name.
      *
      * @param null $title
-     * @return \Doctrine\ORM\QueryBuilder Query builder
+     *
+     * @return QueryBuilder Query builder
      */
     public function queryByTitle($title = null): QueryBuilder
     {
-        $queryBuilder =$this->queryAll() ;
+        $queryBuilder = $this->queryAll();
 
         if (!is_null($title)) {
             $queryBuilder->andWhere('film.title LIKE :title')
@@ -225,5 +166,40 @@ class FilmsRepository extends ServiceEntityRepository
         }
 
         return $queryBuilder;
+    }
+
+    /**
+     * Apply filters to paginated list.
+     *
+     * @param QueryBuilder $queryBuilder Query builder
+     * @param array        $filters      Filters array
+     *
+     * @return QueryBuilder Query builder
+     */
+    private function applyFiltersToList(QueryBuilder $queryBuilder, array $filters = []): QueryBuilder
+    {
+        if (isset($filters['category']) && $filters['category'] instanceof Category) {
+            $queryBuilder->andWhere('category = :category')
+                ->setParameter('category', $filters['category']);
+        }
+
+        if (isset($filters['tag']) && $filters['tag'] instanceof Tag) {
+            $queryBuilder->andWhere('tags IN (:tag)')
+                ->setParameter('tag', $filters['tag']);
+        }
+
+        return $queryBuilder;
+    }
+
+    /**
+     * Get or create new query builder.
+     *
+     * @param QueryBuilder|null $queryBuilder Query builder
+     *
+     * @return QueryBuilder Query builder
+     */
+    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
+    {
+        return $queryBuilder ?: $this->createQueryBuilder('film');
     }
 }

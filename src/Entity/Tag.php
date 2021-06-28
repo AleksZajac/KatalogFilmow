@@ -48,11 +48,6 @@ class Tag
      * @ORM\Column(type="string", length=64)
      *
      * @Assert\NotBlank
-     * @Assert\Type (type="string)
-     * @Assert\Length (
-     *     allowEmptyString="false",
-     *      min="3",
-     *     max="64"
      */
     private $name;
 
@@ -73,17 +68,25 @@ class Tag
         $this->films = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
+     * @param string $name
+     *
      * @return $this
      */
     public function setName(string $name): self
@@ -105,6 +108,8 @@ class Tag
      * Add task to collection.
      *
      * @param Films $film Film entity
+     *
+     * @return Tag
      */
     public function addFilm(Films $film): self
     {

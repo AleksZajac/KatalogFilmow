@@ -1,4 +1,7 @@
 <?php
+/*
+ *  CommentsRepository
+ */
 
 namespace App\Repository;
 
@@ -27,8 +30,10 @@ class CommentsRepository extends ServiceEntityRepository
      * @constant int
      */
     const PAGINATOR_ITEMS_PER_PAGE = 10;
+
     /**
      * CategoryRepository constructor.
+     * @param ManagerRegistry $registry
      */
     public function __construct(ManagerRegistry $registry)
     {
@@ -48,6 +53,8 @@ class CommentsRepository extends ServiceEntityRepository
 
     /**
      * @param null $id
+     *
+     * @return QueryBuilder
      */
     public function commentfilms($id = null): QueryBuilder
     {
@@ -59,47 +66,6 @@ class CommentsRepository extends ServiceEntityRepository
         }
 
         return $queryBuilder;
-    }
-
-    // /**
-    //  * @return Comments[] Returns an array of Comments objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Comments
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
-
-    /**
-     * Get or create new query builder.
-     *
-     * @param QueryBuilder|null $queryBuilder Query builder
-     *
-     * @return QueryBuilder Query builder
-     */
-    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
-    {
-        return $queryBuilder ?: $this->createQueryBuilder('l');
     }
 
     /**
@@ -115,6 +81,7 @@ class CommentsRepository extends ServiceEntityRepository
         $this->_em->persist($comments);
         $this->_em->flush($comments);
     }
+
     /**
      * Delete record.
      *
@@ -127,5 +94,17 @@ class CommentsRepository extends ServiceEntityRepository
     {
         $this->_em->remove($comments);
         $this->_em->flush($comments);
+    }
+
+    /**
+     * Get or create new query builder.
+     *
+     * @param QueryBuilder|null $queryBuilder Query builder
+     *
+     * @return QueryBuilder Query builder
+     */
+    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
+    {
+        return $queryBuilder ?: $this->createQueryBuilder('l');
     }
 }

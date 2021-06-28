@@ -99,6 +99,8 @@ class Comments
     }
 
     /**
+     * @param string $content
+     *
      * @return $this
      */
     public function setContent(string $content): self
@@ -117,6 +119,8 @@ class Comments
     }
 
     /**
+     * @param DateTimeInterface $date
+     *
      * @return $this
      */
     public function setDate(DateTimeInterface $date): self
@@ -126,12 +130,17 @@ class Comments
         return $this;
     }
 
+    /**
+     * @return Films|null
+     */
     public function getFilms(): ?Films
     {
         return $this->films;
     }
 
     /**
+     * @param Films|null $films
+     *
      * @return $this
      */
     public function setFilms(?Films $films): self
@@ -151,6 +160,8 @@ class Comments
 
 
     /**
+     * @param UsersProfile|null $login
+     *
      * @return $this
      */
     public function setLogin(?UsersProfile $login)

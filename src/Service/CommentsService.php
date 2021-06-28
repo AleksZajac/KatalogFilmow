@@ -21,21 +21,21 @@ class CommentsService
     /**
      * Category repository.
      *
-     * @var \App\Repository\CommentsRepository
+     * @var CommentsRepository
      */
     private $commentsRepository;
     /**
      * Paginator.
      *
-     * @var \Knp\Component\Pager\PaginatorInterface
+     * @var PaginatorInterface
      */
     private $paginator;
 
     /**
      * Categories constructor.
      *
-     * @param \Knp\Component\Pager\PaginatorInterface $paginator          Paginator
-     * @param \App\Repository\CommentsRepository      $commentsRepository Categories Repository
+     * @param CommentsRepository $commentsRepository
+     * @param PaginatorInterface $paginator
      */
     public function __construct(CommentsRepository $commentsRepository, PaginatorInterface $paginator)
     {

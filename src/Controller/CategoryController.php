@@ -9,18 +9,21 @@ use App\Entity\Category;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
 use App\Service\CategoryService;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
 /**
  * Class CategoryController.
  *
  * @Route("/category")
+ *
  * @IsGranted("ROLE_ADMIN")
  */
 class CategoryController extends AbstractController
@@ -28,24 +31,26 @@ class CategoryController extends AbstractController
     /**
      * Category service.
      *
-     * @var \App\Service\CategoryService
+     * @var CategoryService
      */
     private $categoryService;
 
     /**
      * CategoryController constructor.
      *
-     * @param \App\Service\CategoryService $categoryService Category service
+     * @param CategoryService $categoryService Category service
      */
     public function __construct(CategoryService $categoryService)
     {
         $this->categoryService = $categoryService;
     }
+
     /**
      * Index action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @param Request $request HTTP request
+     *
+     * @return Response HTTP response
      *
      * @Route(
      *     "/",
@@ -56,7 +61,7 @@ class CategoryController extends AbstractController
      */
     public function index(CategoryRepository $repository, PaginatorInterface $paginator, Request $request): Response
     {
-        $page = $request->query->getInt('page',1);
+        $page = $request->query->getInt('page', 1);
         $pagination = $this->categoryService->createPaginatedList($page);
 
         return $this->render(
@@ -64,14 +69,16 @@ class CategoryController extends AbstractController
             ['pagination' => $pagination]
         );
     }
+
     /**
      * New action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request*
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @param Request $request HTTP request*
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @return Response HTTP response
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/new",
@@ -89,6 +96,7 @@ class CategoryController extends AbstractController
             $this->categoryService->save($category);
 
             $this->addFlash('success', 'message_created_successfully');
+
             return $this->redirectToRoute('category_index');
         }
 
@@ -97,15 +105,17 @@ class CategoryController extends AbstractController
             ['form' => $form->createView()]
         );
     }
+
     /**
      * Edit action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Entity\Category                         $category      Films entity*
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @param Request  $request  HTTP request
+     * @param Category $category Films entity*
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @return Response HTTP response
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/edit",
@@ -136,16 +146,17 @@ class CategoryController extends AbstractController
             ]
         );
     }
+
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request  HTTP request
-     * @param \App\Entity\Category                      $category Category entity
+     * @param Request  $request  HTTP request
+     * @param Category $category Category entity
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/delete",
@@ -185,5 +196,4 @@ class CategoryController extends AbstractController
             ]
         );
     }
-
 }

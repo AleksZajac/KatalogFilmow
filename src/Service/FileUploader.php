@@ -33,7 +33,7 @@ class FileUploader
     /**
      * Upload file.
      *
-     * @param \Symfony\Component\HttpFoundation\File\UploadedFile $file File to upload
+     * @param UploadedFile $file File to upload
      *
      * @return string Filename of uploaded file
      */
@@ -77,5 +77,4 @@ class FileUploader
 
         return $safeFilename.'-'.uniqid().'.'.$extension;
     }
-
 }

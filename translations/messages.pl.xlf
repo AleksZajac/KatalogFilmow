@@ -418,6 +418,18 @@
                 <source>action.add_tag</source>
                 <target>Dodaj Tag</target>
             </trans-unit>
+            <trans-unit id="title.film_new">
+                <source>title.film_new</source>
+                <target>Dodaj Film</target>
+            </trans-unit>
+            <trans-unit id="tlabel_tags">
+                <source>label_tags</source>
+                <target>Tagi</target>
+            </trans-unit>
+            <trans-unit id="title.favorite_new">
+                <source>title.favorite_new</source>
+                <target>Dodaj do ulubionych</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

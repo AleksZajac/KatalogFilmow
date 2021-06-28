@@ -10,6 +10,8 @@ use App\Entity\Photo;
 use App\Form\PhotoType;
 use App\Repository\PhotoRepository;
 use App\Service\FileUp;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -27,7 +29,7 @@ class PhotosController extends AbstractController
     /**
      * Photos repository.
      *
-     * @var \App\Repository\PhotoRepository
+     * @var PhotoRepository
      */
     private $photoRepository;
 
@@ -47,8 +49,8 @@ class PhotosController extends AbstractController
     /**
      * PhotosController constructor.
      *
-     * @param \App\Repository\PhotoRepository $photoRepository Avatar repository
-     * @param \App\Service\FileUp             $fileUp          File uploader
+     * @param PhotoRepository     $photoRepository Avatar repository
+     * @param \App\Service\FileUp $fileUp          File uploader
      */
     public function __construct(PhotoRepository $photoRepository, FileUp $fileUp, Filesystem $filesystem)
     {
@@ -60,12 +62,13 @@ class PhotosController extends AbstractController
     /**
      * Create action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
+     * @param Request $request HTTP request
+     * @param $id
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/createphotos/{id}",
@@ -109,13 +112,13 @@ class PhotosController extends AbstractController
     /**
      * Edit action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @param \App\Entity\Photo                         $photo   Photo
-     * @param
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @param Request $request HTTP request
+     * @param Photo   $photo   Photo
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @return Response HTTP response
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/edit",
@@ -123,7 +126,7 @@ class PhotosController extends AbstractController
      *     methods={"GET", "PUT"}
      * )
      */
-    public function edit(Request $request, Photo $photo ): Response
+    public function edit(Request $request, Photo $photo): Response
     {
         $form = $this->createForm(PhotoType::class, $photo, ['method' => 'PUT']);
         $form->handleRequest($request);
@@ -150,7 +153,7 @@ class PhotosController extends AbstractController
             [
                 'form' => $form->createView(),
                 'photo' => $photo,
-                'id' => $photo->getFilms()->getId()
+                'id' => $photo->getFilms()->getId(),
             ]
         );
     }
@@ -158,14 +161,14 @@ class PhotosController extends AbstractController
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Entity\Photo                         $photo      Tag entity
-     * @param \App\Repository\PhotoRepository           $repository Tag repository
+     * @param Request         $request    HTTP request
+     * @param Photo           $photo      Tag entity
+     * @param PhotoRepository $repository Tag repository
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/delete",
@@ -195,7 +198,7 @@ class PhotosController extends AbstractController
             [
                 'form' => $form->createView(),
                 'photo' => $photo,
-                'id' => $photo->getFilms()->getId()
+                'id' => $photo->getFilms()->getId(),
             ]
         );
     }

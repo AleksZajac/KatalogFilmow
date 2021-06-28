@@ -34,23 +34,31 @@ class CommentsController extends AbstractController
      * @var CommentsService
      */
     private $commentsService;
+
     /**
      * Categories Controller constructor.
+     * @param CommentsService $commentsService
      *
-     * @param CommentsService $comments Categories service
      */
     public function __construct(CommentsService $commentsService)
     {
         $this->commentsService = $commentsService;
     }
+
     /**
      * }
      * Add comment action.
      *
-     * @param Comments $comments Trash entity
-     * @param Films    $films    Trash entity
+     * @param Request            $request
+     * @param PaginatorInterface $paginator
+     * @param CommentsRepository $repository
+     * @param FilmsRepository    $filmsRepository
+     * @param $id
      *
      * @return Response HTTP response
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/add_comment/{id}",
@@ -89,6 +97,7 @@ class CommentsController extends AbstractController
             ]
         );
     }
+
     /**
      * Delete action.
      *

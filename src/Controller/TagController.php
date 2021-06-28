@@ -10,11 +10,12 @@ use App\Form\TagType;
 use App\Form\TagTypeedit;
 use App\Repository\TagRepository;
 use App\Service\TagService;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -29,25 +30,27 @@ class TagController extends AbstractController
     /**
      * Category service.
      *
-     * @var \App\Service\TagService
+     * @var TagService
      */
     private $tagService;
 
     /**
      * CategoryController constructor.
      *
-     * @param \App\Service\TagService $tagService Tag service
+     * @param TagService $tagService Tag service
      */
     public function __construct(TagService $tagService)
     {
         $this->tagService = $tagService;
     }
+
     /**
      * Index action.
-     * @param \Knp\Component\Pager\PaginatorInterface   $paginator  Paginator
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @param PaginatorInterface $paginator Paginator
+     * @param Request            $request   HTTP request
+     *
+     * @return Response HTTP response
      *
      * @Route(
      *     "/",
@@ -70,13 +73,12 @@ class TagController extends AbstractController
     /**
      * New action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Repository\TagRepository             $repository Tag repository
+     * @param Request $request HTTP request
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/new",
@@ -85,7 +87,7 @@ class TagController extends AbstractController
      * )
      * @IsGranted("ROLE_ADMIN")
      */
-    public function new(Request $request): Response
+    public function new(Request $request, TagRepository $repository): Response
     {
         $tag = new Tag();
         $form = $this->createForm(TagType::class, $tag);
@@ -106,13 +108,13 @@ class TagController extends AbstractController
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Entity\Tag                           $tag        Tag entity
+     * @param Request $request HTTP request
+     * @param Tag     $tag     Tag entity
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/delete",
@@ -138,7 +140,6 @@ class TagController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->tagService->delete($tag);
-            ;
             $this->addFlash('success', 'message.deleted_successfully');
 
             return $this->redirectToRoute('tag_index');
@@ -156,14 +157,14 @@ class TagController extends AbstractController
     /**
      * Edit action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Entity\Tag                           $tag        Films entity
-     * @param \App\Repository\TagRepository             $repository Films repository
+     * @param Request       $request    HTTP request
+     * @param Tag           $tag        Films entity
+     * @param TagRepository $repository Films repository
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/edit",

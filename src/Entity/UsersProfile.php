@@ -162,7 +162,7 @@ class UsersProfile
     }
 
     /**
-     * @param string|null $city
+     * @param string|null $login
      *
      * @return UsersProfile
      */

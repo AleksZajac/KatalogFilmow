@@ -33,7 +33,7 @@ class FileUp
     /**
      * Upload file.
      *
-     * @param \Symfony\Component\HttpFoundation\File\UploadedFile $file File to upload
+     * @param UploadedFile $file File to upload
      *
      * @return string Filename of uploaded file
      */

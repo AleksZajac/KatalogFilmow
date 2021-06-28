@@ -1,10 +1,15 @@
 <?php
+/*
+ * FavoriteMovies
+ */
 
 namespace App\Repository;
 
 use App\Entity\FavoriteMovies;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Collections\Expr\Value;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -27,6 +32,9 @@ class FavoriteMoviesRepository extends ServiceEntityRepository
      */
     const PAGINATOR_ITEMS_PER_PAGE = 10;
 
+    /**
+     * FavoriteMoviesRepository constructor.
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, FavoriteMovies::class);
@@ -35,28 +43,16 @@ class FavoriteMoviesRepository extends ServiceEntityRepository
     /**
      * Query all records.
      *
-     * @return \Doctrine\ORM\QueryBuilder Query builder
+     * @return QueryBuilder Query builder
      */
     public function queryAll(int $id): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
             ->select('favorite_movies', 'films')
-            ->leftJoin('favorite_movies.id_film','films')
-            ->andWhere('favorite_movies.id_user = :user')
+            ->leftJoin('favorite_movies.film', 'films')
+            ->andWhere('favorite_movies.user = :user')
             ->setParameter('user', $id)
             ->orderBy('favorite_movies.id', 'DESC');
-    }
-
-    /**
-     * Get or create new query builder.
-     *
-     * @param \Doctrine\ORM\QueryBuilder|null $queryBuilder Query builder
-     *
-     * @return \Doctrine\ORM\QueryBuilder Query builder
-     */
-    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
-    {
-        return $queryBuilder ?: $this->createQueryBuilder('favorite_movies');
     }
 
     /**
@@ -81,10 +77,10 @@ class FavoriteMoviesRepository extends ServiceEntityRepository
     /**
      * Save record.
      *
-     * @param \App\Entity\FavoriteMovies $favorite Tag entity
+     * @param FavoriteMovies $favorite Tag entity
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function save(FavoriteMovies $favorite): void
     {
@@ -95,14 +91,26 @@ class FavoriteMoviesRepository extends ServiceEntityRepository
     /**
      * Delete record.
      *
-     * @param \App\Entity\FavoriteMovies $favorite FavoriteMovies entity
+     * @param FavoriteMovies $favorite FavoriteMovies entity
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function delete(FavoriteMovies $favorite)
     {
         $this->_em->remove($favorite);
         $this->_em->flush($favorite);
+    }
+
+    /**
+     * Get or create new query builder.
+     *
+     * @param QueryBuilder|null $queryBuilder Query builder
+     *
+     * @return QueryBuilder Query builder
+     */
+    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
+    {
+        return $queryBuilder ?: $this->createQueryBuilder('favorite_movies');
     }
 }

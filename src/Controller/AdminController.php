@@ -9,6 +9,8 @@ use App\Entity\User;
 use App\Repository\FavoriteMoviesRepository;
 use App\Repository\UserRepository;
 use App\Service\UserService;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -36,24 +38,24 @@ class AdminController extends AbstractController
      * @var \App\Service\UserService
      */
     private $userService;
+
     /**
      * CategoryController constructor.
-     *
-     * @param \App\Service\FavoriteService $favoriteService Favorite service
      */
     public function __construct(UserService $userService, FavoriteMoviesRepository $favoriteMoviesRepository)
     {
         $this->userService = $userService;
         $this->favoriteMoviesRepository = $favoriteMoviesRepository;
     }
+
     /**
      * Index action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Repository\UserRepository            $repository Repository
-     * @param \Knp\Component\Pager\PaginatorInterface   $paginator  Paginator
+     * @param Request            $request    HTTP request
+     * @param UserRepository     $repository Repository
+     * @param PaginatorInterface $paginator  Paginator
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
      * @Route(
      *     "/",
@@ -74,17 +76,18 @@ class AdminController extends AbstractController
             ['pagination' => $pagination]
         );
     }
+
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Entity\User                          $user       User entity
-     * @param \App\Repository\UserRepository            $repository User repository
+     * @param Request        $request    HTTP request
+     * @param User           $user       User entity
+     * @param UserRepository $repository User repository
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/deleteUser",
@@ -103,7 +106,7 @@ class AdminController extends AbstractController
             $form->submit($request->request->get($form->getName()));
         }
         if ($form->isSubmitted() && $form->isValid()) {
-            if($this->favoriteMoviesRepository->findBy(['id_user' => $id])){
+            if ($this->favoriteMoviesRepository->findBy(['id_user' => $id])) {
                 $favorite = $this->favoriteMoviesRepository->findOneBy(['id_user' => $id]);
                 $favoriteMoviesRepository->delete($favorite);
             }
@@ -122,17 +125,18 @@ class AdminController extends AbstractController
             ]
         );
     }
+
     /**
      * Add Admin action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Entity\User                          $user       User entity
-     * @param \App\Repository\UserRepository            $repository User repository
+     * @param Request        $request    HTTP request
+     * @param User           $user       User entity
+     * @param UserRepository $repository User repository
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/AddAdmin",

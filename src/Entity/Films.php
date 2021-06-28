@@ -19,7 +19,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\FilmsRepository", repositoryClass=FilmsRepository::class)
  *
  * @UniqueEntity (fields="title", message="Title already taken")
-
  */
 class Films
 {
@@ -49,12 +48,6 @@ class Films
      *
      * @ORM\Column(type="string", length=64)
      *
-     * @Assert\Type (type="string")
-     * @Assert\NotBlank
-     * @Assert\Length (
-     *     allowEmptyString="false",
-     *     min="3",
-     *     max="64"
      */
     private $title;
 
@@ -63,12 +56,7 @@ class Films
      *
      * @ORM\Column(type="text", nullable=true)
      *
-     * @Assert\Type (type="text")
      * @Assert\NotBlank
-     *      * @Assert\Length (
-     *     allowEmptyString="false",
-     *     min="3",
-     *     max="1000"
      */
     private $description;
     /**
@@ -116,11 +104,11 @@ class Films
     private $photo;
 
     /**
-     * FavoriteMovies.
-     *
-     * @ORM\ManyToMany(targetEntity=FavoriteMovies::class, mappedBy="id_film", fetch="EXTRA_LAZY")
+     * @ORM\ManyToMany(targetEntity=FavoriteMovies::class, mappedBy="film")
      */
     private $favoriteMovies;
+
+
 
     /**
      * Film constructor.
@@ -143,6 +131,7 @@ class Films
 
     /**
      * Getter for Title.
+     * @return string|null
      */
     public function getTitle(): ?string
     {
@@ -151,6 +140,8 @@ class Films
 
     /**
      * Setter fpr Title.
+     *
+     * @param string $title
      *
      * @return Films
      */
@@ -163,6 +154,7 @@ class Films
 
     /**
      * Getter for Description.
+     * @return string|null
      */
     public function getDescription(): ?string
     {
@@ -171,6 +163,8 @@ class Films
 
     /**
      * Setter for Description.
+     *
+     * @param string|null $description
      *
      * @return $this
      */
@@ -194,6 +188,8 @@ class Films
     /**
      * Setter for ReleaseDate.
      *
+     * @param string $releasedate
+     *
      * @return $this
      */
     public function setReleaseDate(string $releasedate): self
@@ -212,6 +208,8 @@ class Films
     }
 
     /**
+     * @param Comments $comment
+     *
      * @return $this
      */
     public function addComment(Comments $comment): self
@@ -225,6 +223,8 @@ class Films
     }
 
     /**
+     * @param Comments $comment
+     *
      * @return $this
      */
     public function removeComment(Comments $comment): self
@@ -248,6 +248,8 @@ class Films
     }
 
     /**
+     * @param Category|null $category
+     *
      * @return $this
      */
     public function setCategory(?Category $category): self
@@ -271,6 +273,8 @@ class Films
      * Add tag to collection.
      *
      * @param Tag $tag Tag entity
+     *
+     * @return Films
      */
     public function addTag(Tag $tag): self
     {
@@ -302,6 +306,8 @@ class Films
     }
 
     /**
+     * @param Photo $fileName
+     *
      * @return $this
      */
     public function setFileName(Photo $fileName): self
@@ -325,6 +331,8 @@ class Films
     }
 
     /**
+     * @param Photo $photo
+     *
      * @return $this
      */
     public function setPhoto(Photo $photo): self
@@ -348,6 +356,8 @@ class Films
     }
 
     /**
+     * @param FavoriteMovies $favoriteMovie
+     *
      * @return $this
      */
     public function addFavoriteMovie(FavoriteMovies $favoriteMovie): self
@@ -361,6 +371,8 @@ class Films
     }
 
     /**
+     * @param FavoriteMovies $favoriteMovie
+     *
      * @return $this
      */
     public function removeFavoriteMovie(FavoriteMovies $favoriteMovie): self

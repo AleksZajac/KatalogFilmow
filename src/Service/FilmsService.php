@@ -7,6 +7,8 @@ namespace App\Service;
 
 use App\Entity\Films;
 use App\Repository\FilmsRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 
@@ -18,37 +20,37 @@ class FilmsService
     /**
      * Category service.
      *
-     * @var \App\Service\CategoryService
+     * @var CategoryService
      */
     private $categoryService;
 
     /**
      * Tag service.
      *
-     * @var \App\Service\TagService
+     * @var TagService
      */
     private $tagService;
     /**
      * Category repository.
      *
-     * @var \App\Repository\FilmsRepository
+     * @var FilmsRepository
      */
     private $filmsRepository;
 
     /**
      * Paginator.
      *
-     * @var \Knp\Component\Pager\PaginatorInterface
+     * @var PaginatorInterface
      */
     private $paginator;
 
     /**
      * FilmsService constructor.
      *
-     * @param \App\Repository\FilmsRepository         $filmsRepository Category repository
-     * @param \Knp\Component\Pager\PaginatorInterface $paginator       Paginator
-     * @param \App\Service\CategoryService            $categoryService Category service
-     * @param \App\Service\TagService                 $tagService      Tag service
+     * @param FilmsRepository $filmsRepository Category repository
+     * @param PaginatorInterface $paginator       Paginator
+     * @param CategoryService $categoryService Category service
+     * @param TagService $tagService      Tag service
      */
     public function __construct(FilmsRepository $filmsRepository, PaginatorInterface $paginator, CategoryService $categoryService, TagService $tagService)
     {
@@ -56,6 +58,62 @@ class FilmsService
         $this->paginator = $paginator;
         $this->categoryService = $categoryService;
         $this->tagService = $tagService;
+    }
+
+    /**
+     * Create paginated list.
+     *
+     * @param int   $page    Page number
+     * @param array $filters Filters array
+     *
+     * @return PaginationInterface Paginated list
+     */
+    public function createPaginatedList(int $page, array $filters = []): PaginationInterface
+    {
+        $filters = $this->prepareFilters($filters);
+
+        return $this->paginator->paginate(
+            $this->filmsRepository->queryAll($filters),
+            $page,
+            FilmsRepository::PAGINATOR_ITEMS_PER_PAGE
+        );
+    }
+
+    /**
+     * Save category.
+     *
+     * @param Films $films Category entity
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function save(Films $films): void
+    {
+        $this->filmsRepository->save($films);
+    }
+
+    /**
+     * Delete category.
+     *
+     * @param Films $films Category entity
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function delete(Films $films): void
+    {
+        $this->filmsRepository->delete($films);
+    }
+    /**
+     * Show user profile.
+     *
+     * @param int $id Id user
+     *
+     * @return Films user
+     */
+    public function showFilms(int $id)
+    {
+        return $this->filmsRepository->find($id);
     }
     /**
      * Prepare filters for the tasks list.
@@ -84,58 +142,5 @@ class FilmsService
         }
 
         return $resultFilters;
-    }
-    /**
-     * Create paginated list.
-     *
-     * @param int $page Page number
-     *@param array                                               $filters Filters array
-     * @return \Knp\Component\Pager\Pagination\PaginationInterface Paginated list
-     */
-    public function createPaginatedList(int $page, array $filters = []): PaginationInterface
-    {
-        $filters = $this->prepareFilters($filters);
-        return $this->paginator->paginate(
-            $this->filmsRepository->queryAll($filters),
-            $page,
-            FilmsRepository::PAGINATOR_ITEMS_PER_PAGE
-        );
-    }
-
-    /**
-     * Save category.
-     *
-     * @param \App\Entity\Films $films Category entity
-     *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function save(Films $films): void
-    {
-        $this->filmsRepository->save($films);
-    }
-
-    /**
-     * Delete category.
-     *
-     * @param \App\Entity\Films $films Category entity
-     *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     */
-    public function delete(Films $films): void
-    {
-        $this->filmsRepository->delete($films);
-    }
-    /**
-     * Show user profile.
-     *
-     * @param int $id Id user
-     *
-     * @return Films user
-     */
-    public function showFilms(int $id)
-    {
-        return $this->filmsRepository->find($id);
     }
 }

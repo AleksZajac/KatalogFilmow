@@ -63,8 +63,8 @@ class FilmsController extends AbstractController
     /**
      * Index action.
      *
+     * @param Request            $request   HTTP request
      * @param PaginatorInterface $paginator Paginator
-     * @param Request $request   HTTP request
      *
      * @return Response HTTP response
      *
@@ -98,7 +98,6 @@ class FilmsController extends AbstractController
                 Films::NUMBER_OF_ITEMS
             );
 
-
             return $this->render(
                 'films/searchView.html.twig',
                 ['pagination' => $pagination]
@@ -119,6 +118,7 @@ class FilmsController extends AbstractController
      * View action.
      *
      * @param Films $film Film Entity*
+     * @param $id
      *
      * @return Response HTTP response
      *
@@ -180,7 +180,7 @@ class FilmsController extends AbstractController
      * Edit action.
      *
      * @param Request $request HTTP request
-     * @param Films $film    Films entity*
+     * @param Films   $film    Films entity*
      *
      * @return Response HTTP response
      *
@@ -219,9 +219,8 @@ class FilmsController extends AbstractController
     /**
      * Delete action.
      *
-     * @param Request $request    HTTP request
-     * @param Films $film       Film entity
-     * @param FilmsRepository $repository Film repository
+     * @param Request $request HTTP request
+     * @param Films   $film    Film entity
      *
      * @return Response HTTP response
      *
@@ -262,8 +261,6 @@ class FilmsController extends AbstractController
 
     /**
      * Search action.
-     *
-     * @param Films $film Film entity
      *
      * @return Response HTTP response
      *

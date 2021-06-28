@@ -99,19 +99,19 @@ class UsersDataController extends AbstractController
      *
      * @return Response HTTP response
      *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     *
      * @Route(
      *      "/change_pwd",
      *      name="change_password",
      *      methods={"GET", "PUT"},
      * )
      *
-     *  @IsGranted(
+     * @IsGranted(
      *     "IS_AUTHENTICATED_REMEMBERED",
      *     message="You can not edit"
      * )
-     *
-     * @throws ORMException
-     * @throws OptimisticLockException
      */
     public function changeUserPassword(Request $request, UserRepository $repository, UserPasswordEncoderInterface $passwordEncoder, Security $security)
     {

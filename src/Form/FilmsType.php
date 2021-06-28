@@ -19,7 +19,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class FilmsType extends AbstractType
 {
-
     /**
      * @var \App\Form\DataTransformer\TagsDataTransformer
      */
@@ -34,6 +33,7 @@ class FilmsType extends AbstractType
     {
         $this->tagsDataTransformer = $tagsDataTransformer;
     }
+
     /**
      * Builds the form.
      *
@@ -66,14 +66,15 @@ class FilmsType extends AbstractType
             ]
         );
         $builder->add(
-        'releasedate',
+            'releasedate',
             \Symfony\Component\Form\Extension\Core\Type\DateType::class,
-        [
+            [
+                'label' => 'Data premiery',
             'input' => 'string',
             'widget' => 'single_text',
             'attr' => ['placeholder' => 'Data wydania(YYYY-MM-DD)'],
-        ]
-    );
+            ]
+        );
         $builder->add(
             'category',
             EntityType::class,

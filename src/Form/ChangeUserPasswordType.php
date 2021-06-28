@@ -3,20 +3,20 @@
  * Created by PhpStorm.
  * User: ola
  * Date: 10.07.19
- * Time: 10:35
+ * Time: 10:35.
  */
 
 namespace App\Form;
 
 use App\Form\Model\ChangePassword;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class ChangeUserPasswordType
+ * Class ChangeUserPasswordType.
  */
 class ChangeUserPasswordType extends AbstractType
 {
@@ -33,18 +33,19 @@ class ChangeUserPasswordType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('oldPassword', PasswordType::class, array(
+        $builder->add('oldPassword', PasswordType::class, [
             'label' => 'label.oldpassword',
-            'attr' => ['placeholder' => 'Stare hasło']
-        ));
+            'attr' => ['placeholder' => 'Stare hasło'],
+        ]);
         $builder->add('password', RepeatedType::class, [
             'type' => PasswordType::class,
             'first_options' => ['label' => 'label.newpassword',
-                'attr' => ['placeholder' => 'Nowe hasło']],
+                'attr' => ['placeholder' => 'Nowe hasło'], ],
             'second_options' => ['label' => 'label.repeatnewpassword',
-                'attr' => ['placeholder' => 'Powtórz nowe hasło']],
+                'attr' => ['placeholder' => 'Powtórz nowe hasło'], ],
         ]);
     }
+
     /**
      * Configures the options for this type.
      *
@@ -54,6 +55,7 @@ class ChangeUserPasswordType extends AbstractType
     {
         $resolver->setDefaults(['data_class' => ChangePassword::class]);
     }
+
     /**
      * Returns the prefix of the template block name for this type.
      *

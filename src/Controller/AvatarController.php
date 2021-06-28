@@ -9,6 +9,8 @@ use App\Entity\Avatar;
 use App\Form\AvatarType;
 use App\Repository\AvatarRepository;
 use App\Service\FileUploader;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -26,30 +28,30 @@ class AvatarController extends AbstractController
     /**
      * Avatar repository.
      *
-     * @var \App\Repository\AvatarRepository
+     * @var AvatarRepository
      */
     private $avatarRepository;
 
     /**
      * File uploader.
      *
-     * @var \App\Service\FileUploader
+     * @var FileUploader
      */
     private $fileUploader;
 
     /**
      * Filesystem component.
      *
-     * @var \Symfony\Component\Filesystem\Filesystem
+     * @var Filesystem
      */
     private $filesystem;
 
     /**
      * AvatarController constructor.
      *
-     * @param \App\Repository\AvatarRepository         $avatarRepository Avatar repository
-     * @param \Symfony\Component\Filesystem\Filesystem $filesystem       Filesystem component
-     * @param \App\Service\FileUploader                $fileUploader     File uploader
+     * @param AvatarRepository $avatarRepository Avatar repository
+     * @param Filesystem $filesystem       Filesystem component
+     * @param FileUploader $fileUploader     File uploader
      */
     public function __construct(AvatarRepository $avatarRepository, Filesystem $filesystem, FileUploader $fileUploader)
     {
@@ -61,12 +63,12 @@ class AvatarController extends AbstractController
     /**
      * Create action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
+     * @param Request $request HTTP request
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/create",
@@ -108,13 +110,13 @@ class AvatarController extends AbstractController
     /**
      * Edit action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @param \App\Entity\Avatar                        $avatar  Avatar
+     * @param Request $request HTTP request
+     * @param Avatar $avatar  Avatar
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/edit",
@@ -156,14 +158,14 @@ class AvatarController extends AbstractController
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Entity\Avatar                           $avatar        Tag entity
-     * @param \App\Repository\AvatarRepository             $repository Tag repository
+     * @param Request $request    HTTP request
+     * @param Avatar $avatar     Tag entity
+     * @param AvatarRepository $repository Tag repository
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/delete",

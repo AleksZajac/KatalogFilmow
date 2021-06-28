@@ -26,8 +26,8 @@
         </thead>
         <tbody>
         {% for favorite in pagination %}
-            {% if favorite.iduser.id == app.user.id %}
-                {% for film in favorite.idfilm %}
+            {% if favorite.user.id == app.user.id %}
+                {% for film in favorite.film %}
                 <tr><td> {{ film.title }}</td>
                 <td> <a class="btn btn-primary" href="{{ url('favorite_delete', {id: film.id}) }}" title="{{ 'action.delete'|trans }}">
                         {{ 'action.delete'|trans }}

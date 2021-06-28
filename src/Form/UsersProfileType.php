@@ -2,18 +2,17 @@
 /**
  * UsersProfile Type.
  */
+
 namespace App\Form;
 
 use App\Entity\UsersProfile;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class UsersProfileType
- *
+ * Class UsersProfileType.
  */
 class UsersProfileType extends AbstractType
 {
@@ -36,7 +35,7 @@ class UsersProfileType extends AbstractType
             [
                 'required' => true,
                 'attr' => ['max_length' => 255,
-                    'placeholder' => 'Imię'],
+                    'placeholder' => 'Imię', ],
             ]
         );
         $builder->add(
@@ -45,7 +44,7 @@ class UsersProfileType extends AbstractType
             [
                 'required' => true,
                 'attr' => ['max_length' => 255,
-                    'placeholder' => 'Nazwisko'],
+                    'placeholder' => 'Nazwisko', ],
             ]
         );
 
@@ -55,10 +54,11 @@ class UsersProfileType extends AbstractType
             [
                 'required' => true,
                 'attr' => ['max_length' => 255,
-                    'placeholder' => 'Login'],
+                    'placeholder' => 'Login', ],
             ]
         );
     }
+
     /**
      * Configures the options for this type.
      *
@@ -69,6 +69,7 @@ class UsersProfileType extends AbstractType
         $resolver->setDefaults(['data_class' => UsersProfile::class,
         'label' => false, ]);
     }
+
     /**
      * Returns the prefix of the template block name for this type.
      *
@@ -77,7 +78,7 @@ class UsersProfileType extends AbstractType
      *
      * @return string The prefix of the template block name
      */
-    public function getBlockPrefix():string
+    public function getBlockPrefix(): string
     {
         return 'usersprofile';
     }

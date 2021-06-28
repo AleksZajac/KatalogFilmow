@@ -5,13 +5,13 @@
 
 namespace App\Service;
 
-
+use App\Entity\Films;
 use App\Entity\User;
-
 use App\Repository\UserRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Class UsersService.
@@ -21,26 +21,28 @@ class UserService
     /**
      * User repository.
      *
-     * @var \App\Repository\UserRepository
+     * @var UserRepository
      */
     private $userRepository;
+
     /**
      * UserService constructor.
      *
-     * @param \App\Repository\UserRepository      $userRepository Users repository
-     * @param \Knp\Component\Pager\PaginatorInterface $paginator          Paginator
+     * @param UserRepository $userRepository Users repository
+     * @param PaginatorInterface $paginator      Paginator
      */
     public function __construct(UserRepository $userRepository, PaginatorInterface $paginator)
     {
         $this->userRepository = $userRepository;
         $this->paginator = $paginator;
     }
+
     /**
      * Create paginated list.
      *
      * @param int $page Page number
      *
-     * @return \Knp\Component\Pager\Pagination\PaginationInterface Paginated list
+     * @return PaginationInterface Paginated list
      */
     public function createPaginatedList(int $page): PaginationInterface
     {
@@ -50,6 +52,7 @@ class UserService
             UserRepository::PAGINATOR_ITEMS_PER_PAGE
         );
     }
+
     /**
      * Show user profile.
      *
@@ -61,13 +64,14 @@ class UserService
     {
         return $this->userRepository->find($id);
     }
+
     /**
      * Save category.
      *
-     * @param \App\Entity\User $user User entity
+     * @param User $user User entity
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function save(User $user): void
     {
@@ -77,14 +81,13 @@ class UserService
     /**
      * Delete category.
      *
-     * @param \App\Entity\Films $user Category entity
+     * @param Films $user Category entity
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function delete(User $user): void
     {
         $this->userRepository->delete($user);
     }
-
 }

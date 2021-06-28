@@ -7,6 +7,8 @@ namespace App\Service;
 
 use App\Entity\FavoriteMovies;
 use App\Repository\FavoriteMoviesRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 
@@ -18,22 +20,22 @@ class FavoriteService
     /**
      * Tag repository.
      *
-     * @var \App\Repository\FavoriteMoviesRepository
+     * @var FavoriteMoviesRepository
      */
     private $favoriteMoviesRepository;
 
     /**
      * Paginator.
      *
-     * @var \Knp\Component\Pager\PaginatorInterface
+     * @var PaginatorInterface
      */
     private $paginator;
 
     /**
      * CategoryService constructor.
      *
-     * @param \App\Repository\FavoriteMoviesRepository      $favoriteMoviesRepository Tag repository
-     * @param \Knp\Component\Pager\PaginatorInterface $paginator          Paginator
+     * @param FavoriteMoviesRepository $favoriteMoviesRepository Tag repository
+     * @param PaginatorInterface $paginator                Paginator
      */
     public function __construct(FavoriteMoviesRepository $favoriteMoviesRepository, PaginatorInterface $paginator)
     {
@@ -45,8 +47,9 @@ class FavoriteService
      * Create paginated list.
      *
      * @param int $page Page number
+     * @param int $id
      *
-     * @return \Knp\Component\Pager\Pagination\PaginationInterface Paginated list
+     * @return PaginationInterface Paginated list
      */
     public function createPaginatedList(int $page, int $id): PaginationInterface
     {
@@ -60,10 +63,10 @@ class FavoriteService
     /**
      * Save category.
      *
-     * @param \App\Entity\FavoriteMovies $favorite Category entity
+     * @param FavoriteMovies $favorite Category entity
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function save(FavoriteMovies $favorite): void
     {
@@ -73,37 +76,38 @@ class FavoriteService
     /**
      * Delete category.
      *
-     * @param \App\Entity\FavoriteMovies $favorite Favorite entity
+     * @param FavoriteMovies $favorite Favorite entity
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function delete(FavoriteMovies $favorite): void
     {
         $this->favoriteMoviesRepository->delete($favorite);
     }
+
     /**
      * Delete category.
      *
-     * @param \App\Entity\FavoriteMovies $favorite Favorite entity
+     * @param FavoriteMovies $favorite Favorite entity
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function deletefilms(FavoriteMovies $favorite): void
     {
         $this->favoriteMoviesRepository->delete($favorite);
     }
+
     /**
      * Find tag by Id.
      *
      * @param int $id Tag Id
      *
-     * @return \App\Entity\FavoriteMovies|null Tag entity
+     * @return FavoriteMovies|null Tag entity
      */
     public function findOneById(int $id): ?FavoriteMovies
     {
         return $this->favoriteMoviesRepository->findOneById($id);
     }
-
 }
