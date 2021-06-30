@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * Class FilmsController.
+ * Class CommentsController.
  *
  * @Route("/comments")
  */
@@ -36,7 +36,7 @@ class CommentsController extends AbstractController
     private $commentsService;
 
     /**
-     * Categories Controller constructor.
+     * Comments Controller constructor.
      * @param CommentsService $commentsService
      *
      */
@@ -50,9 +50,7 @@ class CommentsController extends AbstractController
      * Add comment action.
      *
      * @param Request            $request
-     * @param PaginatorInterface $paginator
      * @param CommentsRepository $repository
-     * @param FilmsRepository    $filmsRepository
      * @param $id
      *
      * @return Response HTTP response
@@ -67,7 +65,7 @@ class CommentsController extends AbstractController
      * )
      * @IsGranted("ROLE_USER")
      */
-    public function addcommentForm(Request $request, PaginatorInterface $paginator, CommentsRepository $repository, FilmsRepository $filmsRepository, $id): Response
+    public function addcommentForm(Request $request, CommentsRepository $repository, $id): Response
     {
         $comment = new Comments();
         $entityManager = $this->getDoctrine()->getManager();

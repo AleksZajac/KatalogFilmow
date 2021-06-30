@@ -57,7 +57,7 @@ class FavoriteMovieController extends AbstractController
     private $favoriteMoviesRepository;
 
     /**
-     * CategoryController constructor.
+     * FavoriteMoviesController constructor.
      *
      * @param FavoriteService          $favoriteService          Favorite service
      * @param FilmsService             $filmsService

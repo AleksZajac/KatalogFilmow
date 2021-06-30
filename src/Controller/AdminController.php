@@ -33,14 +33,14 @@ class AdminController extends AbstractController
      */
     private $favoriteMoviesRepository;
     /**
-     * Favorite service.
+     * User service.
      *
      * @var UserService
      */
     private $userService;
 
     /**
-     * CategoryController constructor.
+     * AdminController constructor.
      * @param UserService              $userService
      * @param FavoriteMoviesRepository $favoriteMoviesRepository
      */

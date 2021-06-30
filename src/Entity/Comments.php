@@ -41,9 +41,9 @@ class Comments
     /**
      * Content.
      *
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string")
      *
-     * @Assert\Type (type="text")
+     * @Assert\Type (type="string")
      * @Assert\NotBlank
      * @Assert\Length (
      *     allowEmptyString="false",
@@ -60,7 +60,7 @@ class Comments
      *
      * @ORM\Column(type="datetime")
      *
-     * @Assert\Type (type="\DateRimeInterface")
+     * @Assert\Type (type="\Date")
      *
      * @Gedmo\Timestampable(on="create")
      */
@@ -69,7 +69,7 @@ class Comments
     /**
      * Films.
      *
-     * @ORM\ManyToOne(targetEntity=Films::class, inversedBy="comment", cascade={"persist","remove"})
+     * @ORM\ManyToOne(targetEntity=Films::class, inversedBy="comment")
      * @ORM\JoinColumn(nullable=false)
      */
     private $films;

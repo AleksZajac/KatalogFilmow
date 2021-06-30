@@ -1,6 +1,6 @@
 <?php
 /**
- * Avatar controller.
+ * Photos controller.
  */
 
 namespace App\Controller;
