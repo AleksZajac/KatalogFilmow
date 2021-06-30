@@ -6,8 +6,10 @@
 namespace App\Tests\Service;
 
 use App\Entity\Films;
+use App\Entity\Photo;
 use App\Repository\CategoryRepository;
 use App\Repository\FilmsRepository;
+use App\Repository\PhotoRepository;
 use App\Service\FilmsService;
 use Entity\Category;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -31,6 +33,12 @@ class FilmsServiceTest extends KernelTestCase
      */
     private ?FilmsRepository $filmsRepository;
 
+    /**
+     * Film repository.
+     *
+     * @var PhotoRepository|object|null
+     */
+    private ?PhotoRepository $photoRepository;
     /**
      * Category repository.
      *
@@ -64,7 +72,7 @@ class FilmsServiceTest extends KernelTestCase
     }
 
     /**
-     * category
+     * category.
      */
     private function createCategory()
     {
@@ -154,6 +162,67 @@ class FilmsServiceTest extends KernelTestCase
     }
 
     /**
+     * Test pagination  list - filtry ctaegory.
+     */
+    public function testCreatePaginatedListFilCategory(): void
+    {
+        // given
+        $page = 1;
+        $dataSetSize = 3;
+        $expectedResultSize = 1;
+
+        $counter = 0;
+        while ($counter < $dataSetSize) {
+            $film = new Films();
+            $category = new \App\Entity\Category();
+            $category->setName('test1');
+            $categoryRepository = self::$container->get(CategoryRepository::class);
+            $categoryRepository->save($category);
+            $film->setReleaseDate('2021-07-15');
+            $film->setDescription('ssa');
+            $film->setCategory($category);
+            $film->setTitle('Test film #'.$counter);
+            $this->filmsRepository->save($film);
+
+            ++$counter;
+        }
+
+        $fil = [];
+        $fil['category_id'] = $category->getId();
+        // when
+        $result = $this->filmsService->createPaginatedList($page, $fil);
+
+        // then
+        $this->assertEquals($expectedResultSize, $result->count());
+    }
+
+    public function testSavePhoto(): void
+    {
+        $film = new Films();
+        $category = new \App\Entity\Category();
+        $category->setName('test2');
+        $categoryRepository = self::$container->get(CategoryRepository::class);
+        $categoryRepository->save($category);
+        $film->setReleaseDate('2021-07-15');
+        $film->setDescription('ssa');
+        $film->setCategory($category);
+        $film->setTitle('Test film 2');
+        $this->filmsRepository->save($film);
+        $photo = new Photo();
+        $photo->setFilms($film);
+        $photo->setFilename('zdj1255.jpg');
+        $this->photoRepository->save($photo);
+        $expectedId = $photo->getId();
+
+        $result = $this->photoRepository->findOneBy(['id'=> $expectedId]);
+
+        // then
+        $this->assertEquals($expectedId, $result->getId());
+
+    }
+
+
+    /**
      * Set up test.
      */
     protected function setUp(): void
@@ -163,6 +232,6 @@ class FilmsServiceTest extends KernelTestCase
         $this->categoryRepository = $container->get(CategoryRepository::class);
         $this->filmsService = $container->get(FilmsService::class);
         $this->filmsRepository = $container->get(FilmsRepository::class);
+        $this->photoRepository = $container->get(PhotoRepository::class);
     }
-
 }

@@ -65,6 +65,22 @@ class CategoryControllerTest extends WebTestCase
         // then
         $this->assertEquals($expectedStatusCode, $resultStatusCode);
     }
+    /**
+     * Test create film for admin user.
+     */
+    public function testCreateCategoryAdminUser(): void
+    {
+        // given
+        $expectedStatusCode = 301;
+        $admin = $this->createUser(['ROLE_ADMIN', 'ROLE_USER']);
+        $this->logIn($admin);
+        // when
+        $this->httpClient->request('GET', '/category/new/');
+        $resultStatusCode = $this->httpClient->getResponse()->getStatusCode();
+
+        // then
+        $this->assertEquals($expectedStatusCode, $resultStatusCode);
+    }
 
     /**
      * Create user.

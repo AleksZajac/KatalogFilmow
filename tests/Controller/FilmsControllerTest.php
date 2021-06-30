@@ -5,8 +5,13 @@
 
 namespace App\Tests\Controller;
 
+use App\Entity\Comments;
+use App\Entity\Films;
 use App\Entity\User;
 use App\Entity\UsersProfile;
+use App\Repository\CategoryRepository;
+use App\Repository\CommentsRepository;
+use App\Repository\FilmsRepository;
 use App\Repository\UserRepository;
 use App\Repository\UsersProfileRepository;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -38,17 +43,78 @@ class FilmsControllerTest extends WebTestCase
     public function testIndexRouteAnonymousUser(): void
     {
         // given
-        $expectedStatusCode = 301;
+        $expectedStatusCode = 200;
 
         // when
-        $this->httpClient->request('GET', '/films');
+        $this->httpClient->request('GET', '/films/');
         $resultStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
         // then
         $this->assertEquals($expectedStatusCode, $resultStatusCode);
     }
 
+    /**
+     * Test index route for anonymous user.
+     */
+    public function testIndexRouteAdminUser(): void
+    {
+        // given
+        $expectedStatusCode = 200;
+        $admin = $this->createUser(['ROLE_ADMIN', 'ROLE_USER']);
+        $this->logIn($admin);
+        // when
+        $this->httpClient->request('GET', '/films/');
+        $resultStatusCode = $this->httpClient->getResponse()->getStatusCode();
 
+        // then
+        $this->assertEquals($expectedStatusCode, $resultStatusCode);
+    }
+
+    public function testShowFilm(): void
+    {
+        // given
+        $expectedStatusCode = 200;
+        $expectedFilm = $this->createFilm();
+        $id = $expectedFilm->getId();
+        // when
+        $this->httpClient->request('GET', '/films/'.$id);
+        $result = $this->httpClient->getResponse()->getStatusCode();
+
+        // then
+        $this->assertEquals($expectedStatusCode, $result);
+    }
+
+    /**
+     * category.
+     */
+    private function createCategory()
+    {
+        $category = new \App\Entity\Category();
+        $category->setName('test');
+        $categoryRepository = self::$container->get(CategoryRepository::class);
+        $categoryRepository->save($category);
+
+        return $category;
+    }
+
+    /**
+     * Test index route for anonymous user.
+     */
+    public function testIndexRouteSearch(): void
+    {
+        // given
+        $expectedStatusCode = 200;
+
+        // when
+        $aa = $this->httpClient->request('GET', '/films/');
+        $resultStatusCode = $this->httpClient->getResponse()->getStatusCode();
+        $form = $aa->filter('form')->form();
+        $form['search']->setValue('query');
+        $this->httpClient->submit($form);
+
+        // then
+        $this->assertEquals($expectedStatusCode, $resultStatusCode);
+    }
 
     /**
      * Simulate user log in.
@@ -71,6 +137,58 @@ class FilmsControllerTest extends WebTestCase
     }
 
     /**
+     * Create film.
+     */
+    private function createFilm(): Films
+    {
+        $film = new Films();
+        $film->setTitle('Title TEst');
+        $film->setDescription('fff');
+        $film->setReleaseDate('2021-07-15');
+        $film->setDescription('ssa');
+        $film->setCategory($this->createCategory());
+
+        $filmrepo = self::$container->get(FilmsRepository::class);
+        $filmrepo->save($film);
+
+        return $film;
+    }
+
+    /**
+     * Test create film for admin user.
+     */
+    public function testCreateFilmAdminUser(): void
+    {
+        // given
+        $expectedStatusCode = 301;
+        $admin = $this->createUser(['ROLE_ADMIN', 'ROLE_USER']);
+        $this->logIn($admin);
+        // when
+        $this->httpClient->request('GET', '/films/new/');
+        $resultStatusCode = $this->httpClient->getResponse()->getStatusCode();
+
+        // then
+        $this->assertEquals($expectedStatusCode, $resultStatusCode);
+    }
+
+    /**
+     * Test create film for admin user.
+     */
+    public function testCreateFilmNonAdmin(): void
+    {
+        // given
+        $expectedStatusCode = 301;
+        $admin = $this->createUser([User::ROLE_USER]);
+        $this->logIn($admin);
+        // when
+        $this->httpClient->request('GET', '/films/new/');
+        $resultStatusCode = $this->httpClient->getResponse()->getStatusCode();
+
+        // then
+        $this->assertEquals($expectedStatusCode, $resultStatusCode);
+    }
+
+    /**
      * Create user.
      *
      * @param array $roles User roles
@@ -81,12 +199,12 @@ class FilmsControllerTest extends WebTestCase
     {
         $passwordEncoder = self::$container->get('security.password_encoder');
         $user = new User();
-        $user->setEmail('user@example.com');
+        $user->setEmail('user568000001@example.com');
         $user->setRoles($roles);
         $user->setPassword(
             $passwordEncoder->encodePassword(
                 $user,
-                'p@55w0rd'
+                'p@5687de5w0rd'
             )
         );
         $user->setUsersprofile($this->createUserProfile());
@@ -94,6 +212,18 @@ class FilmsControllerTest extends WebTestCase
         $userRepository->save($user);
 
         return $user;
+    }
+
+    private function createComment($film, $userprofile)
+    {
+        $profile = new Comments();
+        $profile->setContent('gd');
+        $profile->setLogin($userprofile);
+        $profile->setFilms($film);
+        $profileRepository = self::$container->get(CommentsRepository::class);
+        $profileRepository->save($profile);
+
+        return $profile;
     }
 
     private function createUserProfile()

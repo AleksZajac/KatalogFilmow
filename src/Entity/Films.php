@@ -200,9 +200,9 @@ class Films
     }
 
     /**
-     * @return Collection|Comments[]
+     *
      */
-    public function getComment(): Collection
+    public function getComment()
     {
         return $this->comment;
     }

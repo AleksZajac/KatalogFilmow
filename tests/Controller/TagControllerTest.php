@@ -6,8 +6,10 @@
 namespace App\Tests\Controller;
 
 use App\Entity\Category;
+use App\Entity\Tag;
 use App\Entity\User;
 use App\Entity\UsersProfile;
+use App\Repository\TagRepository;
 use App\Repository\UserRepository;
 use App\Repository\UsersProfileRepository;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -65,7 +67,23 @@ class TagControllerTest extends WebTestCase
         // then
         $this->assertEquals($expectedStatusCode, $resultStatusCode);
     }
+    public function testTag(): void
+    {
+        // given
+        $expectedStatusCode = 200;
+        $admin = $this->createUser(['ROLE_ADMIN', 'ROLE_USER']);
+        $this->logIn($admin);
+        $expectedTag = new Tag();
+        $expectedTag->setName('taago33');
+        $tagRepository = self::$container->get(TagRepository::class);
+        $tagRepository->save($expectedTag);
+        // when
+        $this->httpClient->request('GET', '/tag/');
+        $result = $this->httpClient->getResponse()->getStatusCode();
 
+        // then
+        $this->assertEquals($expectedStatusCode, $result);
+    }
     /**
      * Create user.
      *

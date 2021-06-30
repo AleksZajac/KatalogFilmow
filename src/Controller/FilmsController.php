@@ -15,6 +15,7 @@ use App\Service\TagService;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
@@ -156,6 +157,7 @@ class FilmsController extends AbstractController
      *     methods={"GET", "POST"},
      *     name="film_new",
      * )
+     * @IsGranted("ROLE_ADMIN")
      */
     public function new(Request $request, FilmsRepository $repository): Response
     {
@@ -193,6 +195,7 @@ class FilmsController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="films_edit",
      * )
+     * @IsGranted("ROLE_ADMIN")
      */
     public function edit(Request $request, Films $film): Response
     {

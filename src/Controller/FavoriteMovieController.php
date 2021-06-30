@@ -15,6 +15,7 @@ use App\Service\UserService;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,6 +26,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * Class FilmsController.
  *
  * @Route("/favorite")
+ * @IsGranted("ROLE_USER")
  */
 class FavoriteMovieController extends AbstractController
 {
@@ -57,6 +59,10 @@ class FavoriteMovieController extends AbstractController
      * CategoryController constructor.
      *
      * @param FavoriteService $favoriteService Favorite service
+     * @param FilmsService $filmsService
+     * @param UserService $userService
+     *
+     * @param FavoriteMoviesRepository $favoriteMoviesRepository
      */
     public function __construct(FavoriteService $favoriteService, FilmsService $filmsService, UserService $userService, FavoriteMoviesRepository $favoriteMoviesRepository)
     {
@@ -68,6 +74,9 @@ class FavoriteMovieController extends AbstractController
 
     /**
      * Index action.
+     *
+     * @param Request $request
+     * @param PaginatorInterface $paginator
      *
      * @return Response HTTP response
      *
@@ -116,8 +125,8 @@ class FavoriteMovieController extends AbstractController
 
         //    return $this->redirectToRoute('favorite_index');
         //}
-        if ($this->favoriteMoviesRepository->findBy(['user' => $userr])) {
-            $favorite = $this->favoriteMoviesRepository->findOneBy(['user' => $userr]);
+        if ($this->favoriteService->findByuser($userr)) {
+            $favorite = $this->favoriteService->findOneByuser($userr);
         } else {
             $favorite = new FavoriteMovies();
             $favorite->setUser($thisuser);
@@ -175,7 +184,7 @@ class FavoriteMovieController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $favoritemovie = $films->getFavoriteMovies();
-            $favoriteRepository->delete($favoritemovie);
+            $this->favoriteService->delete($favoritemovie);
             $this->addFlash('success', 'message.deleted_successfully');
 
             return $this->redirectToRoute('favorite_index');

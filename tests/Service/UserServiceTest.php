@@ -5,8 +5,11 @@
 
 namespace App\Tests\Service;
 
+use App\Entity\Avatar;
+use App\Entity\Films;
 use App\Entity\User;
 use App\Entity\UsersProfile;
+use App\Repository\AvatarRepository;
 use App\Repository\UserRepository;
 use App\Repository\UsersProfileRepository;
 use App\Service\UserService;
@@ -32,6 +35,12 @@ class UserServiceTest extends KernelTestCase
      * @var UserRepository|object|null
      */
     private ?UserRepository $userRepository;
+    /**
+     * User repository.
+     *
+     * @var AvatarRepository|object|null
+     */
+    private ?AvatarRepository $avatarRepository;
 
     /**
      * User repository.
@@ -64,7 +73,6 @@ class UserServiceTest extends KernelTestCase
         // then
         $this->assertEquals($expectedUser, $resultUser);
     }
-
 
     private function createUserProfile()
     {
@@ -153,6 +161,75 @@ class UserServiceTest extends KernelTestCase
         $this->assertEquals($expectedResultSize, $result->count());
     }
 
+    public function testSaveAvatar(): void
+    {
+        $user = new User();
+        $user->setEmail('test006@gmail.com');
+        $user->setPassword('123445');
+        $user->setUsersprofile($this->createUserProfile());
+        $this->userService->save($user);
+
+        $avatar = new Avatar();
+        $avatar->setUser($user);
+        $avatar->setFilename('avatartest125.jpg');
+        $this->avatarRepository->save($avatar);
+        $expectedId = $avatar->getId();
+
+        $result = $this->avatarRepository->findOneBy(['id' => $expectedId]);
+
+        // then
+        $this->assertEquals($expectedId, $result->getId());
+    }
+    public function testDeleteAvatar(): void
+    {
+        $user = new User();
+        $user->setEmail('test006@gmail.com');
+        $user->setPassword('123445');
+        $user->setUsersprofile($this->createUserProfile());
+        $this->userService->save($user);
+
+        $avatar = new Avatar();
+        $avatar->setUser($user);
+        $avatar->setFilename('avatartest122.jpg');
+        $this->avatarRepository->save($avatar);
+        $expectedId = $avatar->getId();
+        $this->avatarRepository->delete($avatar);
+        $result = $this->avatarRepository->findOneBy(['id' => $expectedId]);
+
+        // then
+        $this->assertNull($result);
+    }
+    public function testShowProfile(): void
+    {
+        $user = new User();
+        $user->setEmail('test00677@gmail.com');
+        $user->setPassword('123445');
+        $user->setUsersprofile($this->createUserProfile());
+        $this->userService->save($user);
+
+        $result = $this->userService->showUser($user->getId());
+
+        // then
+        $this->assertEquals($user->getId(), $result->getId());
+    }
+    public function testAddAdmin(): void
+    {
+        //given
+        $user = new User();
+        $user->setEmail('test006770@gmail.com');
+        $user->setPassword('123445');
+        $user->setUsersprofile($this->createUserProfile());
+        $this->userService->save($user);
+
+        //when
+        $user->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
+        $this->userService->save($user);
+        $result = $this->userService->showUser($user->getId());
+
+        // then
+        $this->assertEquals(['ROLE_USER', 'ROLE_ADMIN'], $result->getRoles());
+    }
+
     /**
      * Set up test.
      */
@@ -163,5 +240,6 @@ class UserServiceTest extends KernelTestCase
         $this->userRepository = $container->get(UserRepository::class);
         $this->userService = $container->get(UserService::class);
         $this->profileRepository = $container->get(UsersProfileRepository::class);
+        $this->avatarRepository = $container->get(AvatarRepository::class);
     }
 }

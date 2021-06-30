@@ -69,7 +69,7 @@ class Comments
     /**
      * Films.
      *
-     * @ORM\ManyToOne(targetEntity=Films::class, inversedBy="comment")
+     * @ORM\ManyToOne(targetEntity=Films::class, inversedBy="comment", cascade={"persist","remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $films;

@@ -11,6 +11,7 @@ use App\Form\Model\ChangePassword;
 use App\Form\UsersProfileType;
 use App\Repository\UserRepository;
 use App\Repository\UsersProfileRepository;
+use App\Service\UsersProfileService;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -28,6 +29,22 @@ use Symfony\Component\Security\Core\Security;
  */
 class UsersDataController extends AbstractController
 {
+    /**
+     * Category service.
+     *
+     * @var UsersProfileService
+     */
+    private $profileService;
+
+    /**
+     * CategoryController constructor.
+     *
+     * @param UsersProfileService $profileService Tag service
+     */
+    public function __construct(UsersProfileService $profileService)
+    {
+        $this->profileService = $profileService;
+    }
     /**
      * Index action.
      *
@@ -76,7 +93,7 @@ class UsersDataController extends AbstractController
         $form = $this->createForm(UsersProfileType::class, $usersprofile, ['method' => 'PUT']);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $repository->save($usersprofile);
+            $this->profileService->save($usersprofile);
             $this->addFlash('success', 'message.updated_successfully');
 
             return $this->redirectToRoute('profil_index');
