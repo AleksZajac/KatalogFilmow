@@ -47,6 +47,10 @@ class TagController extends AbstractController
     /**
      * Index action.
      *
+     * @param TagRepository      $repository
+     * @param PaginatorInterface $paginator
+     * @param Request            $request
+     *
      * @return Response HTTP response
      *
      * @Route(
@@ -70,7 +74,8 @@ class TagController extends AbstractController
     /**
      * New action.
      *
-     * @param Request $request HTTP request
+     * @param Request       $request    HTTP request
+     * @param TagRepository $repository
      *
      * @return Response HTTP response
      *
@@ -105,8 +110,9 @@ class TagController extends AbstractController
     /**
      * Delete action.
      *
-     * @param Request $request HTTP request
-     * @param Tag     $tag     Tag entity
+     * @param Request       $request    HTTP request
+     * @param Tag           $tag        Tag entity
+     * @param TagRepository $repository
      *
      * @return Response HTTP response
      *

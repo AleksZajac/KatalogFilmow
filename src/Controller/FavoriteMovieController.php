@@ -26,6 +26,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * Class FilmsController.
  *
  * @Route("/favorite")
+ *
  * @IsGranted("ROLE_USER")
  */
 class FavoriteMovieController extends AbstractController
@@ -58,9 +59,9 @@ class FavoriteMovieController extends AbstractController
     /**
      * CategoryController constructor.
      *
-     * @param FavoriteService $favoriteService Favorite service
-     * @param FilmsService $filmsService
-     * @param UserService $userService
+     * @param FavoriteService          $favoriteService          Favorite service
+     * @param FilmsService             $filmsService
+     * @param UserService              $userService
      *
      * @param FavoriteMoviesRepository $favoriteMoviesRepository
      */
@@ -75,7 +76,7 @@ class FavoriteMovieController extends AbstractController
     /**
      * Index action.
      *
-     * @param Request $request
+     * @param Request            $request
      * @param PaginatorInterface $paginator
      *
      * @return Response HTTP response
@@ -103,6 +104,8 @@ class FavoriteMovieController extends AbstractController
      * New action.
      *
      * @param Request $request HTTP request*
+     * @param Films   $films
+     * @param int     $id
      *
      * @return Response HTTP response
      *
@@ -157,6 +160,8 @@ class FavoriteMovieController extends AbstractController
      * @param Request                  $request            HTTP request
      * @param FavoriteMovies           $favorite           Category entity
      * @param FavoriteMoviesRepository $favoriteRepository Category repository
+     * @param Films                    $films
+     * @param int                      $id
      *
      * @return Response HTTP response
      *

@@ -51,6 +51,7 @@ class PhotosController extends AbstractController
      *
      * @param PhotoRepository $photoRepository Avatar repository
      * @param FileUp          $fileUp          File uploader
+     * @param Filesystem      $filesystem
      */
     public function __construct(PhotoRepository $photoRepository, FileUp $fileUp, Filesystem $filesystem)
     {
@@ -62,8 +63,10 @@ class PhotosController extends AbstractController
     /**
      * Create action.
      *
-     * @param Request $request HTTP request
+     * @param Request         $request    HTTP request
      * @param $id
+     * @param Films           $film
+     * @param PhotoRepository $repository
      *
      * @return Response HTTP response
      *

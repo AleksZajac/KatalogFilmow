@@ -52,7 +52,9 @@ class FilmsController extends AbstractController
     /**
      * CategoryController constructor.
      *
-     * @param FilmsService $filmsService Category service
+     * @param FilmsService    $filmsService    Category service
+     * @param CategoryService $categoryService
+     * @param TagService      $tagService
      */
     public function __construct(FilmsService $filmsService, CategoryService $categoryService, TagService $tagService)
     {
@@ -64,8 +66,9 @@ class FilmsController extends AbstractController
     /**
      * Index action.
      *
-     * @param Request            $request   HTTP request
-     * @param PaginatorInterface $paginator Paginator
+     * @param Request            $request    HTTP request
+     * @param FilmsRepository    $repository
+     * @param PaginatorInterface $paginator  Paginator
      *
      * @return Response HTTP response
      *
@@ -118,7 +121,9 @@ class FilmsController extends AbstractController
     /**
      * View action.
      *
-     * @param Films $film Film Entity
+     * @param Films              $film               Film Entity
+     * @param CommentsRepository $commentsRepository
+     * @param Request            $request
      * @param $id
      *
      * @return Response HTTP response
@@ -145,7 +150,8 @@ class FilmsController extends AbstractController
     /**
      * New action.
      *
-     * @param Request $request HTTP request*
+     * @param Request         $request    HTTP request*
+     * @param FilmsRepository $repository
      *
      * @return Response HTTP response
      *
@@ -264,6 +270,10 @@ class FilmsController extends AbstractController
 
     /**
      * Search action.
+     *
+     * @param Request            $request
+     * @param PaginatorInterface $paginator
+     * @param FilmsRepository    $repository
      *
      * @return Response HTTP response
      *

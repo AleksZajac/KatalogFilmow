@@ -48,7 +48,9 @@ class CategoryController extends AbstractController
     /**
      * Index action.
      *
-     * @param Request $request HTTP request
+     * @param CategoryRepository $repository
+     * @param PaginatorInterface $paginator
+     * @param Request            $request    HTTP request
      *
      * @return Response HTTP response
      *
@@ -109,8 +111,9 @@ class CategoryController extends AbstractController
     /**
      * Edit action.
      *
-     * @param Request  $request  HTTP request
-     * @param Category $category Films entity*
+     * @param Request            $request    HTTP request
+     * @param Category           $category   Films entity*
+     * @param CategoryRepository $repository
      *
      * @return Response HTTP response
      *

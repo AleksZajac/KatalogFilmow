@@ -111,8 +111,10 @@ class UsersDataController extends AbstractController
     /**
      * Change password action.
      *
-     * @param Request        $request    HTTP request
-     * @param UserRepository $repository User repository
+     * @param Request                      $request         HTTP request
+     * @param UserRepository               $repository      User repository
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param Security                     $security
      *
      * @return Response HTTP response
      *

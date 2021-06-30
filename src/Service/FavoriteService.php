@@ -47,6 +47,7 @@ class FavoriteService
      * Create paginated list.
      *
      * @param int $page Page number
+     * @param int $id
      *
      * @return PaginationInterface Paginated list
      */
@@ -110,12 +111,19 @@ class FavoriteService
         return $this->favoriteMoviesRepository->findOneById($id);
     }
 
+    /**
+     * @param int $user
+     *
+     * @return FavoriteMovies[]
+     */
     public function findByuser(int $user)
     {
         return $this->favoriteMoviesRepository->findBy(['user' => $user]);
     }
 
     /**
+     * @param int $user
+     *
      * @return FavoriteMovies|null
      */
     public function findOneByuser(int $user)

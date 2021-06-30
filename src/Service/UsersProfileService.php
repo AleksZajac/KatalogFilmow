@@ -6,6 +6,7 @@
 namespace App\Service;
 
 use App\Entity\Category;
+use App\Entity\UsersProfile;
 use App\Repository\CategoryRepository;
 use App\Repository\UsersProfileRepository;
 use Doctrine\ORM\OptimisticLockException;
@@ -34,8 +35,8 @@ class UsersProfileService
     /**
      * CategoryService constructor.
      *
-     * @param CategoryRepository $categoryRepository Category repository
-     * @param PaginatorInterface $paginator          Paginator
+     * @param UsersProfileRepository $profileRepository UsersProfile repository
+     * @param PaginatorInterface     $paginator         Paginator
      */
     public function __construct(UsersProfileRepository $profileRepository, PaginatorInterface $paginator)
     {
@@ -43,8 +44,14 @@ class UsersProfileService
         $this->paginator = $paginator;
     }
 
-    public function save(UsersProfileRepository $profile): void
+    /**
+     * @param UsersProfile $profile
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function save(UsersProfile $profile): void
     {
-        $this->profileRepository->save(($profile));
+        $this->profileRepository->save($profile);
     }
 }

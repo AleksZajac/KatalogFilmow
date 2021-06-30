@@ -41,6 +41,8 @@ class AdminController extends AbstractController
 
     /**
      * CategoryController constructor.
+     * @param UserService              $userService
+     * @param FavoriteMoviesRepository $favoriteMoviesRepository
      */
     public function __construct(UserService $userService, FavoriteMoviesRepository $favoriteMoviesRepository)
     {
@@ -80,9 +82,11 @@ class AdminController extends AbstractController
     /**
      * Delete action.
      *
-     * @param Request        $request    HTTP request
-     * @param User           $user       User entity
-     * @param UserRepository $repository User repository
+     * @param Request                  $request                  HTTP request
+     * @param User                     $user                     User entity
+     * @param UserRepository           $repository               User repository
+     * @param int                      $id
+     * @param FavoriteMoviesRepository $favoriteMoviesRepository
      *
      * @return Response HTTP response
      *
