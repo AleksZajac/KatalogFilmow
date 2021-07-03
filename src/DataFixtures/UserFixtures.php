@@ -6,6 +6,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\User;
+use App\Entity\UsersProfile;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -38,8 +39,9 @@ class UserFixtures extends AbstractBaseFixtures
      */
     public function loadData(ObjectManager $manager): void
     {
-        $this->createMany(10, 'users', function ($i) {
+        $this->createMany(4, 'users', function ($i) {
             $user = new User();
+            $userprofile = new UsersProfile();
             $user->setEmail(sprintf('user%d@example.com', $i));
             $user->setRoles([User::ROLE_USER]);
             $user->setPassword(
@@ -48,12 +50,17 @@ class UserFixtures extends AbstractBaseFixtures
                     'user1234'
                 )
             );
+            $userprofile->setName(sprintf('user%d', $i));
+            $userprofile->setLogin(sprintf('user%d', $i));
+            $userprofile->setSurname(sprintf('user%d', $i));
+            $user->setUsersprofile($userprofile);
 
             return $user;
         });
 
         $this->createMany(3, 'admins', function ($i) {
             $user = new User();
+            $userprofile = new UsersProfile();
             $user->setEmail(sprintf('admin%d@example.com', $i));
             $user->setRoles([User::ROLE_USER, User::ROLE_ADMIN]);
             $user->setPassword(
@@ -62,6 +69,10 @@ class UserFixtures extends AbstractBaseFixtures
                     'admin1234'
                 )
             );
+            $userprofile->setName(sprintf('admin%d', $i));
+            $userprofile->setLogin(sprintf('admin%d', $i));
+            $userprofile->setSurname(sprintf('admin%d', $i));
+            $user->setUsersprofile($userprofile);
 
             return $user;
         });

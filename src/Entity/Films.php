@@ -200,7 +200,7 @@ class Films
     }
 
     /**
-     *
+     *@return $this
      */
     public function getComment()
     {
